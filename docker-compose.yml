@@ -1,1 +1,18 @@
+version: '3'
+services:
+  mysql:
+    container_name: HackU2023_Nagoya_DB
+    image: mysql:latest
+    volumes:
+      - .build/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/my.cnf
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: admin
 
+  voicevox_engine:
+    image: voicevox/voicevox_engine:cpu-ubuntu20.04-latest
+    container_name: HackU2023_Nagoya_Voicevox
+    ports: 
+      - '50021:50021'
+    tty: true
