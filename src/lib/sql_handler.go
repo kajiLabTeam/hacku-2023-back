@@ -4,19 +4,21 @@ import (
 	"fmt"
 	"time"
 
+	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 
-	"github.com/kajiLabTeam/hacku-2023-back/src/conf"
+	"github.com/kajiLabTeam/hacku-2023-back/conf"
 )
 
-func SqlConnect() {
+func SqlConnect() (database *gorm.DB) {
 	var db *gorm.DB
 	var err error
 	c := conf.GetMysqlConfig()
 	dsn := c.GetString("mysql.user") + ":" + c.GetString("mysql.password") + "@" + c.GetString("mysql.protocol") + "/" + c.GetString("mysql.dbname") + "?charset=utf8&parseTime=true&loc=Asia%2FTokyo"
+	dialector := mysql.Open(dsn)
 
-	if db, err = gorm.Open(dsn); err != nil {
-		db = connect(dsn, 10)
+	if db, err = gorm.Open(dialector); err != nil {
+		db = connect(dialector, 10)
 	}
 	fmt.Println("db connected!!")
 
