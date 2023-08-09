@@ -9,16 +9,15 @@ docker compose up -d
 docker compose logs
 ```
 
-## どうしてもコンテナがうまく立ち上がらなかった時
-以下のコマンドでDocker環境を初期化してください
+## MySQLのコンテナのサーバーにログインする
+以下のシェルスクリプトを実行する
 ```
- docker stop $(docker ps -aq)
- docker rm $(docker ps -aq)
- 
- docker network prune -f
- docker rmi -f $(docker images --filter dangling=true -qa)
- docker volume rm $(docker volume ls --filter dangling=true -q)
- docker rmi -f $(docker images -qa)
+bash build/bin/mysql_connect.sh
+```
+
+**初めの一回だけ以下のコマンドを実行してください**
+```
+chmod -x build/bin/mysql_connect.sh
 ```
 
 ## GoとMySQLの接続時に注意すること
@@ -40,4 +39,17 @@ mysql:
   password: admin
   protocol: tcp(HackU2023_Nagoya_DB:3306)
   dbname: data_sets
+```
+
+
+## どうしてもコンテナがうまく立ち上がらなかった時
+以下のコマンドでDocker環境を初期化してください
+```
+ docker stop $(docker ps -aq)
+ docker rm $(docker ps -aq)
+ 
+ docker network prune -f
+ docker rmi -f $(docker images --filter dangling=true -qa)
+ docker volume rm $(docker volume ls --filter dangling=true -q)
+ docker rmi -f $(docker images -qa)
 ```
