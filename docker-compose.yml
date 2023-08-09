@@ -9,6 +9,7 @@ services:
       - "3306:3306"
     environment:
       MYSQL_ROOT_PASSWORD: admin
+      MYSQL_DATABASE: hacku_nagoya
 
   voicevox_engine:
     image: voicevox/voicevox_engine:cpu-ubuntu20.04-latest
