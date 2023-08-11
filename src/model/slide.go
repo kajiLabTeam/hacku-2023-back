@@ -7,12 +7,13 @@ import (
 )
 
 type Slide struct {
-	ID         int     `gorm:"primarykey;AUTO_INCREMENT"`
-	ShoatID    []Shoat `gorm:"foreignkey:ID"`
-	SlideText  string
-	SlideURL   string
-	VoiceURL   string
-	PageNumber int
+	ID         int    `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	ShoatID    int    `json:"shoatId"`
+	SlideText  string `json:"slideText"`
+	SlideURL   string `json:"slideUrl"`
+	VoiceURL   string `json:"voiceUrl"`
+	Script     string `json:"script"`
+	PageNumber int    `json:"pageNumber"`
 }
 
 func GetSlideByID(id int) *Slide {

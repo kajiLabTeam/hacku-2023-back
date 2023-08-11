@@ -7,16 +7,19 @@ import (
 	"gorm.io/gorm"
 )
 
-type Shoat struct {
-	ID        int       `gorm:"primarykey;AUTO_INCREMENT"`
-	UserID    []Keyword `gorm:"foreignkey:ID"`
-	GenreID   []Genre   `gorm:"foreignkey:ID"`
-	Title     string
-	CreatedAt time.Time
+type Short struct {
+	ID               int    `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	UserID           string `gorm:"type:varchar(28)" json:"userId"`
+	GenreID          int    `json:"genreId"`
+	Title            string
+	CreatedAt        time.Time
+	BrowsingHistorys []BrowsingHistory `gorm:"foreignkey:ShoatID"`
+	Slides           []Slide           `gorm:"foreignkey:ShoatID"`
+	Tags             []Tag             `gorm:"foreignkey:ShoatID"`
 }
 
-func GetShoatByID(id int) *Shoat {
-	shoat := Shoat{}
+func GetShoatByID(id int) *Short {
+	shoat := Short{}
 	result := db.First(&shoat, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
@@ -24,11 +27,11 @@ func GetShoatByID(id int) *Shoat {
 	return &shoat
 }
 
-func InsertShoat(shoat Shoat) {
-	db.Create(&shoat)
+func InsertShoat(short Short) {
+	db.Create(&short)
 }
 
 func DeleatShoat(id int) {
-	shoat := Shoat{}
-	db.Delete(&shoat, id)
+	short := Short{}
+	db.Delete(&short, id)
 }

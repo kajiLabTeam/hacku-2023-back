@@ -7,8 +7,9 @@ import (
 )
 
 type ReactionList struct {
-	ID           int `gorm:"primarykey;AUTO_INCREMENT"`
-	ReactionName string
+	ID           int        `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	ReactionName string     `json:"reactionName"`
+	Reactions    []Reaction `gorm:"foreignkey:ReactionListID"`
 }
 
 func GetReactionListByID(id int) *ReactionList {

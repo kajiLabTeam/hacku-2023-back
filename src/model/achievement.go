@@ -7,9 +7,9 @@ import (
 )
 
 type Achievement struct {
-	ID        int       `gorm:"primarykey;AUTO_INCREMENT"`
-	UserID    []User    `gorm:"foreignkey:ID"`
-	KeywordID []Keyword `gorm:"foreignkey:ID"`
+	ID        int    `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	UserID    string `gorm:"type:varchar(28)" json:"userId"`
+	KeywordID int    `json:"keywordId"`
 }
 
 func GetAchievementByID(id int) *Achievement {

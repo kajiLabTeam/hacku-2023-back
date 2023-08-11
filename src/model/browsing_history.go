@@ -8,10 +8,10 @@ import (
 )
 
 type BrowsingHistory struct {
-	ID      int     `gorm:"primarykey;AUTO_INCREMENT"`
-	UserID  []User  `gorm:"foreignkey:ID"`
-	ShoatID []Shoat `gorm:"foreignkey:ID"`
-	ReadAt  time.Time
+	ID      int       `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	UserID  string    `gorm:"type:varchar(28)" json:"userId"`
+	ShoatID int       `json:"shoatId"`
+	ReadAt  time.Time `json:"readAt"`
 }
 
 func GetBrowsingHistoryByID(id int) *BrowsingHistory {

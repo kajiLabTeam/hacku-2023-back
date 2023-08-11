@@ -7,8 +7,9 @@ import (
 )
 
 type Genre struct {
-	ID        int `gorm:"primarykey;AUTO_INCREMENT"`
-	GenreName string
+	ID        int    `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	GenreName string `json:"genreName"`
+	Shoat     Short  `gorm:"foreignkey:GenreID"`
 }
 
 func GetGenreByID(id int) *Genre {

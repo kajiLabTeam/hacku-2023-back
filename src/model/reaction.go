@@ -7,10 +7,10 @@ import (
 )
 
 type Reaction struct {
-	ID             int            `gorm:"primarykey;AUTO_INCREMENT"`
-	UserID         []User         `gorm:"foreignkey:ID"`
-	ShoatID        []Shoat        `gorm:"foreignkey:ID"`
-	ReactionListID []ReactionList `gorm:"foreignkey:ID"`
+	ID             int    `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	UserID         string `gorm:"type:varchar(28)" json:"userId"`
+	ShoatID        int    `json:"shoatId"`
+	ReactionListID int    `json:"reactionListId"`
 }
 
 func GetReactionByID(id int) *Reaction {

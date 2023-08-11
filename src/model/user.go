@@ -7,17 +7,21 @@ import (
 )
 
 type User struct {
-	ID       string `gorm:"primarykey;type:varchar(28)"`
-	UserName string
+	ID               string            `gorm:"primarykey;type:varchar(28)" json:"id"`
+	UserName         string            `json:"userName"`
+	Achievements     []Achievement     `gorm:"foreignkey:UserID"`
+	Shoats           []Short           `gorm:"foreignkey:UserID"`
+	BrowsingHistorys []BrowsingHistory `gorm:"foreignkey:UserID"`
+	Reactions        []Reaction        `gorm:"foreignkey:UserID"`
 }
 
-func GetUserByID(id string) interface{} {
+func GetUserByID(id string) *User {
 	user := User{}
 	result := db.First(&user, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
-		return result.Error
+		return nil
 	}
-	return user
+	return &user
 }
 
 func InsertUser(user User) {

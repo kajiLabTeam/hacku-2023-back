@@ -11,7 +11,7 @@ func CreateAllTabale() {
 	db.AutoMigrate(&Keyword{})
 	db.AutoMigrate(&Genre{})
 	db.AutoMigrate(&ReactionList{})
-	db.AutoMigrate(&Shoat{})
+	db.AutoMigrate(&Short{})
 	db.AutoMigrate(&Slide{})
 	db.AutoMigrate(&Tag{})
 	db.AutoMigrate(&Reaction{})
