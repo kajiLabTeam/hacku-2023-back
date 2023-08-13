@@ -7,25 +7,25 @@ import (
 )
 
 type Achievement struct {
-	ID        int       `gorm:"primarykey;AUTO_INCREMENT"`
-	UserID    []User    `gorm:"foreignkey:ID"`
-	KeywordID []Keyword `gorm:"foreignkey:ID"`
+	ID        int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID    string `gorm:"type:varchar(28)" json:"userId"`
+	KeywordID int    `json:"keywordId"`
 }
 
 func GetAchievementByID(id int) *Achievement {
-	achievement := Achievement{}
-	result := db.First(&achievement, id)
+	a := Achievement{}
+	result := db.First(&a, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &achievement
+	return &a
 }
 
-func InsertAchievement(achievement Achievement) {
-	db.Create(&achievement)
+func InsertAchievement(a Achievement) {
+	db.Create(&a)
 }
 
-func DeleatAchievement(id int) {
-	achievement := Achievement{}
-	db.Delete(&achievement, id)
+func DeleteAchievement(id int) {
+	a := Achievement{}
+	db.Delete(&a, id)
 }

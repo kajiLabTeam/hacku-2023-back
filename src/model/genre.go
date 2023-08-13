@@ -7,24 +7,25 @@ import (
 )
 
 type Genre struct {
-	ID        int `gorm:"primarykey;AUTO_INCREMENT"`
-	GenreName string
+	ID        int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	GenreName string `json:"genreName"`
+	Shoat     Short  `gorm:"foreignkey:GenreID"`
 }
 
 func GetGenreByID(id int) *Genre {
-	genre := Genre{}
-	result := db.First(&genre, id)
+	g := Genre{}
+	result := db.First(&g, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &genre
+	return &g
 }
 
-func InsertGenre(genre Genre) {
-	db.Create(&genre)
+func InsertGenre(g Genre) {
+	db.Create(&g)
 }
 
-func DeleatGenret(id int) {
-	genre := Genre{}
-	db.Delete(&genre, id)
+func DeleteGenre(id int) {
+	g := Genre{}
+	db.Delete(&g, id)
 }
