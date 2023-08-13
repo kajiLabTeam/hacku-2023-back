@@ -31,8 +31,8 @@ func GetKeywordByName(name string) *Keyword {
 	return &k
 }
 
-func InsertKeyword(keyword Keyword) {
-	db.Create(&keyword)
+func InsertKeyword(k Keyword) {
+	db.Create(&k)
 }
 
 func DeleatKeyword(id int) {
