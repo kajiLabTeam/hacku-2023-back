@@ -3,10 +3,10 @@ FROM golang:1.19.3-alpine
 # アップデートとgitのインストール
 RUN apk add --update &&  apk add git
 # appディレクトリの作成
-RUN mkdir /go/src/app
+RUN mkdir /src/app
 # ワーキングディレクトリの設定
-WORKDIR /go/src/app
+WORKDIR /src/app
 # ホストのファイルをコンテナの作業ディレクトリに移行
-ADD . /go/src/app
+ADD . /src/app
 
-# CMD ["go", "run", "./cmd/main.go"]
+# CMD ["go", "run", "./main.go"]
