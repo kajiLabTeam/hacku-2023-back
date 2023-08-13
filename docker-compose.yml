@@ -4,7 +4,7 @@ services:
     container_name: HackU2023_Nagoya_DB
     image: mysql:latest
     volumes:
-      - .build/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/my.cnf
+      - build/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/my.cnf
     ports:
       - "3306:3306"
     environment:
