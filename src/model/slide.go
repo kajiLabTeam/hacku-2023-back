@@ -7,7 +7,7 @@ import (
 )
 
 type Slide struct {
-	ID         int    `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	ID         int    `gorm:"primaryKey;autoIncrement" json:"id"`
 	ShoatID    int    `json:"shoatId"`
 	SlideText  string `json:"slideText"`
 	SlideURL   string `json:"slideUrl"`
@@ -17,19 +17,19 @@ type Slide struct {
 }
 
 func GetSlideByID(id int) *Slide {
-	slide := Slide{}
-	result := db.First(&slide, id)
+	s := Slide{}
+	result := db.First(&s, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &slide
+	return &s
 }
 
-func InsertSlide(slide Slide) {
-	db.Create(&slide)
+func InsertSlide(s Slide) {
+	db.Create(&s)
 }
 
 func DeleatSlide(id int) {
-	slide := Slide{}
-	db.Delete(&slide, id)
+	s := Slide{}
+	db.Delete(&s, id)
 }

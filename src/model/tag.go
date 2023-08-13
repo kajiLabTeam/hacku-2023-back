@@ -7,34 +7,34 @@ import (
 )
 
 type Tag struct {
-	ID        int `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	ID        int `gorm:"primaryKey;autoIncrement" json:"id"`
 	KeywordID int `json:"keywordId"`
 	ShoatID   int `json:"shoatId"`
 }
 
 func GetTagByID(id int) *Tag {
-	tag := Tag{}
-	result := db.First(&tag, id)
+	t := Tag{}
+	result := db.First(&t, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &tag
+	return &t
 }
 
 func GetTagByKeywordID(keyword_id int) *Tag {
-	tag := Tag{}
-	result := db.Where("keywordId = ?", keyword_id).First(&tag)
+	t := Tag{}
+	result := db.Where("keywordId = ?", keyword_id).First(&t)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &tag
+	return &t
 }
 
-func InsertTag(tag Tag) {
-	db.Create(&tag)
+func InsertTag(t Tag) {
+	db.Create(&t)
 }
 
 func DeleatTag(id int) {
-	tag := Tag{}
-	db.Delete(&tag, id)
+	t := Tag{}
+	db.Delete(&t, id)
 }

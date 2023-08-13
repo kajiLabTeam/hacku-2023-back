@@ -8,7 +8,7 @@ import (
 )
 
 type Short struct {
-	ID               int    `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	ID               int    `gorm:"primaryKey;autoIncrement" json:"id"`
 	UserID           string `gorm:"type:varchar(28)" json:"userId"`
 	GenreID          int    `json:"genreId"`
 	Title            string
@@ -19,19 +19,19 @@ type Short struct {
 }
 
 func GetShoatByID(id int) *Short {
-	shoat := Short{}
-	result := db.First(&shoat, id)
+	s := Short{}
+	result := db.First(&s, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &shoat
+	return &s
 }
 
-func InsertShoat(short Short) {
-	db.Create(&short)
+func InsertShoat(s Short) {
+	db.Create(&s)
 }
 
 func DeleatShoat(id int) {
-	short := Short{}
-	db.Delete(&short, id)
+	s := Short{}
+	db.Delete(&s, id)
 }

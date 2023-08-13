@@ -7,28 +7,28 @@ import (
 )
 
 type Keyword struct {
-	ID          int         `gorm:"primarykey;AUTO_INCREMENT" json:"id"`
+	ID          int         `gorm:"primaryKey;autoIncrement" json:"id"`
 	KeywordName string      `json:"keywordName"`
 	Achievement Achievement `gorm:"foreignkey:KeywordID"`
 	Tags        []Tag       `gorm:"foreignkey:KeywordID"`
 }
 
 func GetKeywordByID(id int) *Keyword {
-	keyword := Keyword{}
-	result := db.First(&keyword, id)
+	k := Keyword{}
+	result := db.First(&k, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &keyword
+	return &k
 }
 
 func GetKeywordByName(name string) *Keyword {
-	keyword := Keyword{}
-	result := db.First(&keyword, name)
+	k := Keyword{}
+	result := db.First(&k, name)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &keyword
+	return &k
 }
 
 func InsertKeyword(keyword Keyword) {
