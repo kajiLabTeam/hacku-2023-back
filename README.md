@@ -1,34 +1,29 @@
-## MySQLコンテナとVoicevoxコンテナの立ち上げ方
-1. プロジェクトディレクトリまで移動する
-2. コンテナを立ち上げる
+## MySQLコンテナとVoicevoxコンテナとGoコンテナの立ち上げ方
+以下のコマンドをhacku-2023-backディレクトリで実行し、コンテナを立ち上げる
 ```
-docker compose up -d
+make up
 ```
 ### コンテナが正しく動いているか確認したい場合
 ```
-docker compose logs
+make log
 ```
 
 ## MySQLのコンテナのサーバーにログインする
-以下のシェルスクリプトを実行する
+以下のコマンドをhacku-2023-backディレクトリで実行する
 ```
-bash build/bin/mysql_connect.sh
-```
-
-**初めの一回だけ以下のコマンドを実行してください**
-```
-chmod -x build/bin/mysql_connect.sh
+make mysql
 ```
 
 ## Goコンテナに入る
-以下のシェルスクリプトを実行する
+以下のコマンドをhacku-2023-backディレクトリで実行する
 ```
-bash build/bin/enter_go_container.sh
+make go
 ```
 
-**初めの一回だけ以下のコマンドを実行してください**
+## Voicevoxコンテナに入る
+以下のコマンドをhacku-2023-backディレクトリで実行する
 ```
-chmod -x build/bin/enter_go_container.sh
+make voicevox
 ```
 
 ## GoとMySQLの接続時に注意すること
