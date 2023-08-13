@@ -20,6 +20,17 @@ bash build/bin/mysql_connect.sh
 chmod -x build/bin/mysql_connect.sh
 ```
 
+## Goコンテナに入る
+以下のシェルスクリプトを実行する
+```
+bash build/bin/enter_go_container.sh
+```
+
+**初めの一回だけ以下のコマンドを実行してください**
+```
+chmod -x build/bin/enter_go_container.sh
+```
+
 ## GoとMySQLの接続時に注意すること
 **mysql.ymlを変更してください**
 ### ローカルで実行したGoからDockerコンテナ内のMySQLに接続する時
