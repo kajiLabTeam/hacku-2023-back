@@ -27,7 +27,7 @@ func InsertBrowsingHistory(bh BrowsingHistory) {
 	db.Create(&bh)
 }
 
-func DeleatBrowsingHistory(id int) {
+func DeleteBrowsingHistory(id int) {
 	bh := BrowsingHistory{}
 	db.Delete(&bh, id)
 }

@@ -34,7 +34,7 @@ func InsertTag(t Tag) {
 	db.Create(&t)
 }
 
-func DeleatTag(id int) {
+func DeleteTag(id int) {
 	t := Tag{}
 	db.Delete(&t, id)
 }

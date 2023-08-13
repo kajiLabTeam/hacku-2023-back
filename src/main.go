@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	model.CreateAllTabale()
+	model.CreateAllTable()
 	model.InsertKeyword(model.Keyword{KeywordName: "shika"})
 	//print(model.GetKeywordByID(2))
 }

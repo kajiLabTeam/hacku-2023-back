@@ -6,7 +6,7 @@ import (
 
 var db = lib.SqlConnect()
 
-func CreateAllTabale() {
+func CreateAllTable() {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Keyword{})
 	db.AutoMigrate(&Genre{})
