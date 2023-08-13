@@ -8,26 +8,26 @@ import (
 )
 
 type BrowsingHistory struct {
-	ID      int     `gorm:"primarykey;AUTO_INCREMENT"`
-	UserID  []User  `gorm:"foreignkey:ID"`
-	ShoatID []Shoat `gorm:"foreignkey:ID"`
-	ReadAt  time.Time
+	ID      int       `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID  string    `gorm:"type:varchar(28)" json:"userId"`
+	ShoatID int       `json:"shoatId"`
+	ReadAt  time.Time `json:"readAt"`
 }
 
 func GetBrowsingHistoryByID(id int) *BrowsingHistory {
-	browsinghistory := BrowsingHistory{}
-	result := db.First(&browsinghistory, id)
+	bh := BrowsingHistory{}
+	result := db.First(&bh, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &browsinghistory
+	return &bh
 }
 
-func InsertBrowsingHistory(browsinghistory BrowsingHistory) {
-	db.Create(&browsinghistory)
+func InsertBrowsingHistory(bh BrowsingHistory) {
+	db.Create(&bh)
 }
 
-func DeleatBrowsingHistory(id int) {
-	browsinghistory := BrowsingHistory{}
-	db.Delete(&browsinghistory, id)
+func DeleteBrowsingHistory(id int) {
+	bh := BrowsingHistory{}
+	db.Delete(&bh, id)
 }

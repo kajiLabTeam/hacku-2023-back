@@ -6,12 +6,12 @@ import (
 
 var db = lib.SqlConnect()
 
-func CreateAllTabale() {
+func CreateAllTable() {
 	db.AutoMigrate(&User{})
 	db.AutoMigrate(&Keyword{})
 	db.AutoMigrate(&Genre{})
 	db.AutoMigrate(&ReactionList{})
-	db.AutoMigrate(&Shoat{})
+	db.AutoMigrate(&Short{})
 	db.AutoMigrate(&Slide{})
 	db.AutoMigrate(&Tag{})
 	db.AutoMigrate(&Reaction{})
