@@ -1,10 +1,40 @@
 version: '3'
 services:
+  go:
+    container_name: HackU2023_Nagoya_GO
+    build:
+      context: ./build/go
+      dockerfile: Dockerfile
+    stdin_open: true
+    tty: true
+    # env_file:
+    #   - ./build/go/.env
+    volumes:
+      - ./src:/src/app
+    ports:
+      - 8080:8080
+    depends_on:
+      - "mysql"
+
+  # python:
+  #   container_name: HackU2023_Nagoya_Py
+  #   build:
+  #     context: .build/python
+  #     dockerfile: Dockerfile
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - ./src_py:/src/app
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - "mysql"
+
   mysql:
     container_name: HackU2023_Nagoya_DB
     image: mysql:latest
     volumes:
-      - .build/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/my.cnf
+      - ./build/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/my.cnf
     ports:
       - "3306:3306"
     environment:
