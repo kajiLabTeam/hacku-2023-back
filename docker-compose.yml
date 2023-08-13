@@ -16,19 +16,19 @@ services:
     depends_on:
       - "mysql"
 
-  python:
-    container_name: HackU2023_Nagoya_Py
-    build:
-      context: .build/python
-      dockerfile: Dockerfile
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./src_py:/src/app
-    ports:
-      - 8081:8081
-    depends_on:
-      - "mysql"
+  # python:
+  #   container_name: HackU2023_Nagoya_Py
+  #   build:
+  #     context: .build/python
+  #     dockerfile: Dockerfile
+  #   stdin_open: true
+  #   tty: true
+  #   volumes:
+  #     - ./src_py:/src/app
+  #   ports:
+  #     - 8081:8081
+  #   depends_on:
+  #     - "mysql"
 
   mysql:
     container_name: HackU2023_Nagoya_DB
