@@ -25,7 +25,7 @@ func InsertGenre(g Genre) {
 	db.Create(&g)
 }
 
-func DeleatGenret(id int) {
+func DeleteGenre(id int) {
 	g := Genre{}
 	db.Delete(&g, id)
 }

@@ -13,7 +13,7 @@ type Short struct {
 	GenreID          int    `json:"genreId"`
 	Title            string
 	CreatedAt        time.Time
-	BrowsingHistorys []BrowsingHistory `gorm:"foreignkey:ShoatID"`
+	BrowsingHistories []BrowsingHistory `gorm:"foreignkey:ShoatID"`
 	Slides           []Slide           `gorm:"foreignkey:ShoatID"`
 	Tags             []Tag             `gorm:"foreignkey:ShoatID"`
 }

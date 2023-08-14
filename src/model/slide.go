@@ -29,7 +29,7 @@ func InsertSlide(s Slide) {
 	db.Create(&s)
 }
 
-func DeleatSlide(id int) {
+func DeleteSlide(id int) {
 	s := Slide{}
 	db.Delete(&s, id)
 }

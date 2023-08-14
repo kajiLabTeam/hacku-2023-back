@@ -25,7 +25,7 @@ func InsertReactionList(rl ReactionList) {
 	db.Create(&rl)
 }
 
-func DeleatReactionList(id int) {
+func DeleteReactionList(id int) {
 	rl := ReactionList{}
 	db.Delete(&rl, id)
 }

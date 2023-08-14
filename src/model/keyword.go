@@ -35,7 +35,7 @@ func InsertKeyword(k Keyword) {
 	db.Create(&k)
 }
 
-func DeleatKeyword(id int) {
+func DeleteKeyword(id int) {
 	keyword := Keyword{}
 	db.Delete(&keyword, id)
 }

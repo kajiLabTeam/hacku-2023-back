@@ -26,7 +26,7 @@ func InsertReaction(r Reaction) {
 	db.Create(&r)
 }
 
-func DeleatReaction(id int) {
+func DeleteReaction(id int) {
 	r := Reaction{}
 	db.Delete(&r, id)
 }
