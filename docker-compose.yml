@@ -13,6 +13,10 @@ services:
       - ./src:/src/app
     ports:
       - 8080:8080
+    deploy:
+      resources:
+        limits:
+          memory: 2g
     depends_on:
       - "mysql"
 
@@ -37,6 +41,10 @@ services:
       - ./build/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/my.cnf
     ports:
       - "3306:3306"
+    deploy:
+      resources:
+        limits:
+          memory: 2g
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: hacku_nagoya
@@ -44,6 +52,8 @@ services:
   voicevox_engine:
     image: voicevox/voicevox_engine:cpu-ubuntu20.04-latest
     container_name: HackU2023_Nagoya_Voicevox
+    volumes:
+      - ./build/voicevox/presets.yaml:/opt/voicevox_engine/presets.yaml
     ports: 
       - '50021:50021'
     tty: true
