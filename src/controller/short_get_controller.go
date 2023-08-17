@@ -3,7 +3,6 @@ package controller
 import (
 	"net/http"
 	"strconv"
-	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kajiLabTeam/hacku-2023-back/model"
@@ -26,17 +25,27 @@ func GetShort(c *gin.Context) {
 			VoiceURL string `json:"voiceURL"`
 		}
 
+		type Reaction struct {
+			Count   int  `json:"count"`
+			Reacted bool `json:"reacted"`
+		}
+		type Reactions struct {
+			Heart Reaction `json:"heart"`
+			Good  Reaction `json:"good"`
+			Smile Reaction `json:"smile"`
+		}
+
 		type Presentation struct {
-			ID        int            `json:"id"`
-			Title     string         `json:"title"`
-			Speaker   string         `json:"speaker"`
-			Slides    []Slide        `json:"slides"`
-			Tags      []string       `json:"tags"`
-			Genre     string         `json:"genre"`
-			Views     int            `json:"views"`
-			Poster    string         `json:"poster"`
-			CreatedAt time.Time      `json:"createdAt"`
-			Reactions map[string]int `json:"reactions"`
+			ID        int       `json:"id"`
+			Title     string    `json:"title"`
+			Speaker   string    `json:"speaker"`
+			Slides    []Slide   `json:"slides"`
+			Tags      []string  `json:"tags"`
+			Genre     string    `json:"genre"`
+			Views     int       `json:"views"`
+			Poster    string    `json:"poster"`
+			CreatedAt string    `json:"createdAt"`
+			Reactions Reactions `json:"reactions"`
 		}
 		sl := []Slide{}
 		for i := 0; i < len(model.GetSlideByShortID(s.ID)); i++ {
@@ -51,11 +60,23 @@ func GetShort(c *gin.Context) {
 		for i := 0; i < len(model.GetTagByShortID(s.ID)); i++ {
 			t = append(t, model.GetKeywordByID(model.GetTagByShortID(s.ID)[i].KeywordID).KeywordName)
 		}
-		r := make(map[string]int)
+		r := []Reaction{}
 		rl := model.GetReactionList()
 		for i := 0; i < len(rl); i++ {
-			r[rl[i].ReactionName] = len(model.GetReactionByShortID(s_id, rl[i].ID))
+			tmp := Reaction{
+				Count:   len(model.GetReactionByShortID(s.ID, rl[i].ID)),
+				Reacted: true}
+			r = append(r, tmp)
 		}
+		print(r[0].Count)
+		rs := Reactions{
+			Heart: r[0],
+			Good:  r[1],
+			Smile: r[2],
+		}
+		// 日にちまでのフォーマット
+		dateFormat := "2006-01-02"
+		fDate := s.CreatedAt.Format(dateFormat)
 		result := Presentation{
 			ID:        s_id,
 			Title:     s.Title,
@@ -65,8 +86,8 @@ func GetShort(c *gin.Context) {
 			Genre:     model.GetGenreByID(s.GenreID).GenreName,
 			Views:     len(model.GetBrowsingHistoryByShortID(s.ID)),
 			Poster:    model.GetUserByID(s.UserID).UserName,
-			CreatedAt: s.CreatedAt,
-			Reactions: r,
+			CreatedAt: fDate,
+			Reactions: rs,
 		}
 		//出力
 		c.JSON(http.StatusOK, gin.H{"shorts": result})

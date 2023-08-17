@@ -57,11 +57,11 @@ func InsertTestData() {
 		{ID: 3, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
 	}
 	reaction := []Reaction{
-		{ID: 1, UserID: user[0].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[0].ID},
-		{ID: 2, UserID: user[1].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[0].ID},
-		{ID: 3, UserID: user[2].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[1].ID},
-		{ID: 4, UserID: user[0].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[1].ID},
-		{ID: 5, UserID: user[1].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[2].ID},
+		{ID: 1, UserID: user[0].ID, ShortID: short[3].ID, ReactionListID: reaction_list[0].ID},
+		{ID: 2, UserID: user[1].ID, ShortID: short[3].ID, ReactionListID: reaction_list[0].ID},
+		{ID: 3, UserID: user[2].ID, ShortID: short[3].ID, ReactionListID: reaction_list[1].ID},
+		{ID: 4, UserID: user[0].ID, ShortID: short[3].ID, ReactionListID: reaction_list[1].ID},
+		{ID: 5, UserID: user[1].ID, ShortID: short[3].ID, ReactionListID: reaction_list[2].ID},
 	}
 	for i := 0; i < len(user); i++ {
 		InsertUser(user[i])

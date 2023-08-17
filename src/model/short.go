@@ -8,12 +8,12 @@ import (
 )
 
 type Short struct {
-	ID                int    `gorm:"primaryKey;autoIncrement" json:"id"`
-	UserID            string `gorm:"type:varchar(28)" json:"userId"`
-	GenreID           int    `json:"genreId"`
-	Title             string `json:"title"`
-	Speaker           string `json:"speaker"`
-	CreatedAt         time.Time
+	ID                int               `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID            string            `gorm:"type:varchar(28)" json:"userId"`
+	GenreID           int               `json:"genreId"`
+	Title             string            `json:"title"`
+	Speaker           string            `json:"speaker"`
+	CreatedAt         time.Time         `json:"createdAt"`
 	BrowsingHistories []BrowsingHistory `gorm:"foreignkey:ShortID"`
 	Slides            []Slide           `gorm:"foreignkey:ShortID"`
 	Tags              []Tag             `gorm:"foreignkey:ShortID"`
