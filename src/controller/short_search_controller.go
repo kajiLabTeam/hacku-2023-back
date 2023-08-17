@@ -8,7 +8,7 @@ import (
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
-func GetShort(c *gin.Context) {
+func SearchShort(c *gin.Context) {
 	tags := c.DefaultQuery("tags", "")
 	title := c.DefaultQuery("title", "")
 	var s []model.Short
@@ -44,7 +44,7 @@ func GetShort(c *gin.Context) {
 		for i := 0; i < len(tag); i++ {
 			s_id = append(s_id, tag[i].ShortID)
 		}
-		s = model.GetShortByID(s_id)
+		s = model.GetShortByIDArray(s_id)
 
 	} else if tags == "" && title != "" {
 		//Tagsの入力なしでTitleに入力ある時はショートを全件取得
@@ -55,7 +55,7 @@ func GetShort(c *gin.Context) {
 	if title != "" {
 		var tmp []model.Short
 		for i := 0; i < len(s); i++ {
-			if strings.Contains(strings.ToLower(s[i].Title), title) {
+			if strings.Contains(strings.ToLower(s[i].Title), strings.ToLower(title)) {
 				tmp = append(tmp, s[i])
 			}
 		}

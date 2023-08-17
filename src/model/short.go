@@ -19,7 +19,16 @@ type Short struct {
 	Tags              []Tag             `gorm:"foreignkey:ShortID"`
 }
 
-func GetShortByID(id []int) []Short {
+func GetShortByID(id int) *Short {
+	s := Short{}
+	result := db.Find(&s, id)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return &s
+}
+
+func GetShortByIDArray(id []int) []Short {
 	s := []Short{}
 	result := db.Where("id IN (?)", id).Find(&s).Distinct("id")
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
