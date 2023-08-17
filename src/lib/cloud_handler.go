@@ -15,7 +15,7 @@ import (
 var app *firebase.App
 
 func init() {
-	f := conf.GetMysqlConfig()
+	f := conf.GetFirebaseConfig()
 	conf := &firebase.Config{
 		StorageBucket: f.GetString("firebase.bucket"),
 	}
