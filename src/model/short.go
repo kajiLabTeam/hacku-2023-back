@@ -8,26 +8,43 @@ import (
 )
 
 type Short struct {
-	ID               int    `gorm:"primaryKey;autoIncrement" json:"id"`
-	UserID           string `gorm:"type:varchar(28)" json:"userId"`
-	GenreID          int    `json:"genreId"`
-	Title            string
-	CreatedAt        time.Time
-	BrowsingHistories []BrowsingHistory `gorm:"foreignkey:ShoatID"`
-	Slides           []Slide           `gorm:"foreignkey:ShoatID"`
-	Tags             []Tag             `gorm:"foreignkey:ShoatID"`
+	ID                int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID            string `gorm:"type:varchar(28)" json:"userId"`
+	GenreID           int    `json:"genreId"`
+	Title             string `json:"title"`
+	Speaker           string `json:"speaker"`
+	CreatedAt         time.Time
+	BrowsingHistories []BrowsingHistory `gorm:"foreignkey:ShortID"`
+	Slides            []Slide           `gorm:"foreignkey:ShortID"`
+	Tags              []Tag             `gorm:"foreignkey:ShortID"`
 }
 
-func GetShoatByID(id int) *Short {
+func GetShortByID(id int) *Short {
 	s := Short{}
-	result := db.First(&s, id)
+	result := db.Find(&s, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
 	return &s
 }
 
-func InsertShoat(s Short) {
+func GetShortByIDArray(id []int) []Short {
+	s := []Short{}
+	result := db.Where("id IN (?)", id).Find(&s).Distinct("id")
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return s
+}
+func GetAllShort() []Short {
+	s := []Short{}
+	result := db.Find(&s)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return s
+}
+func InsertShort(s Short) {
 	db.Create(&s)
 }
 

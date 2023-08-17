@@ -9,7 +9,7 @@ import (
 type Tag struct {
 	ID        int `gorm:"primaryKey;autoIncrement" json:"id"`
 	KeywordID int `json:"keywordId"`
-	ShoatID   int `json:"shoatId"`
+	ShortID   int `json:"shortId"`
 }
 
 func GetTagByID(id int) *Tag {
@@ -21,13 +21,22 @@ func GetTagByID(id int) *Tag {
 	return &t
 }
 
-func GetTagByKeywordID(keyword_id int) *Tag {
-	t := Tag{}
-	result := db.Where("keywordId = ?", keyword_id).First(&t)
+func GetTagByShortID(id int) []Tag {
+	t := []Tag{}
+	result := db.Where("short_id = ?", id).Find(&t).Distinct("keyword_id")
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
-	return &t
+	return t
+}
+
+func GetTagByKeywordID(k_id []int) []Tag {
+	t := []Tag{}
+	subQuery := db.Table("tags").Select("short_id").Where("keyword_id IN (?)", k_id).
+		Group("short_id").Having("COUNT(DISTINCT keyword_id) = ?", len(k_id))
+	db.Where("keyword_id IN (?)", k_id).Where("short_id IN (?)", subQuery).
+		Find(&t)
+	return t
 }
 
 func InsertTag(t Tag) {

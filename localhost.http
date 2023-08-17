@@ -1,0 +1,65 @@
+### 一番最初にサイトを訪れた時
+GET http://localhost:8000/api/short/get HTTP/1.1
+
+
+### ショートを取得する機能
+GET http://localhost:8000/api/short/get/1 HTTP/1.1
+
+
+### タイトル or タグ検索する時
+GET http://localhost:8000/api/short/search?tags=Go&title=go HTTP/1.1
+
+
+### ショートを投稿する時
+POST http://localhost:8000/api/short/post/t HTTP/1.1
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer NLbo4bPckPbLGrsxDb2zoPMr8c83
+
+{
+  "title": "1分でわかるJS講座",
+  "speaker": "ずんだもん",
+  "slides": [
+    {
+      "script": "それでは、1分でわかるJS講座を始めるのだ...",
+      "slide": "# JSとは\n- 型がないのでエラーがでない！！", // バックエンドでVoice_Linkに変換される値
+    },
+    {
+      "script": "JSは型がないのでTSよりも扱いやすいのだ...",
+      "slide": "# JSとは\n- TSはくそ."
+    }
+  ]
+}
+
+
+### 個別のユーザー情報 (投稿実績と閲覧レポート) を閲覧したい時
+GET http://localhost:8000/api/user/profile HTTP/1.1
+
+
+### ユーザーごとの投稿履歴を閲覧したい時
+GET http://localhost:8000/api/user/post/history/get/?page=1 HTTP/1.1
+
+
+### ユーザーごとの閲覧履歴を閲覧したい時
+GET http://localhost:8000/api/user/browsing/history/?page=1
+
+
+### リアクションを追加する時
+POST http://localhost:8000/api/short/{shortId}/reaction/add/
+Content-Type: application/json
+Accept: application/json
+Authorization: Bearer NLbo4bPckPbLGrsxDb2zoPMr8c83
+
+{
+  "reaction" : "good"
+}
+
+### リアクションを削除する時
+DELETE http://localhost:8000/api/short/{shortId}/reaction/remove/
+ontent-Type: application/json
+Accept: application/json
+Authorization: Bearer NLbo4bPckPbLGrsxDb2zoPMr8c83
+
+{
+  "reaction" : "good"
+}

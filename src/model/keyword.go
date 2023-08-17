@@ -15,7 +15,7 @@ type Keyword struct {
 
 func GetKeywordByID(id int) *Keyword {
 	k := Keyword{}
-	result := db.First(&k, id)
+	result := db.Find(&k, id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
@@ -24,7 +24,7 @@ func GetKeywordByID(id int) *Keyword {
 
 func GetKeywordByName(name string) *Keyword {
 	k := Keyword{}
-	result := db.First(&k, name)
+	result := db.Where("keyword_name = ?", name).First(&k)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
