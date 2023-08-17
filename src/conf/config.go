@@ -11,7 +11,7 @@ func GetMysqlConfig() *viper.Viper {
 	m = viper.New()
 	m.SetConfigType("yaml")
 	m.SetConfigName("mysql")
-	m.AddConfigPath("conf/")
+	m.AddConfigPath("conf/environments/")
 
 	if err := m.ReadInConfig(); err != nil {
 		return nil
