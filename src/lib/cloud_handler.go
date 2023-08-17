@@ -19,7 +19,7 @@ func init() {
 	conf := &firebase.Config{
 		StorageBucket: f.GetString("firebase.bucket"),
 	}
-	opt := option.WithCredentialsFile("../conf/environments/open-hack-u-2023-nagoya-firebase-adminsdk-gd96g-64fe5f2fe6.json")
+	opt := option.WithCredentialsFile(f.GetString("firebase.path"))
 	var err error
 	app, err = firebase.NewApp(context.Background(), conf, opt)
 	if err != nil {
