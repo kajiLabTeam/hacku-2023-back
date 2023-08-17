@@ -36,6 +36,15 @@ func GetShortByIDArray(id []int) []Short {
 	}
 	return s
 }
+
+func GetRundumShort() []Short {
+	s := []Short{}
+	result := db.Order("RANDOM()").Limit(10).Find(&s)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return s
+}
 func GetAllShort() []Short {
 	s := []Short{}
 	result := db.Find(&s)

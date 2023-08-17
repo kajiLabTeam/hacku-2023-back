@@ -16,6 +16,7 @@ func Init() {
 	})
 
 	r.GET("/api/short/search", controller.SearchShort)
+	r.GET("/api/short/get", controller.GetShort)
 	r.GET("/api/short/get/:shortId", controller.GetShort)
 
 	r.Run(":8000")
