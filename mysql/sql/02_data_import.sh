@@ -1,0 +1,2 @@
+#!/bin/bash
+mysql -uroot -p${MYSQL_ROOT_PASSWORD} --local-infile=1 db -e "LOAD DATA LOCAL INFILE '/docker-entrypoint-initdb.d/data.csv' INTO TABLE tag_list FIELDS TERMINATED BY ',' LINES TERMINATED BY '\n' (tag_name);"

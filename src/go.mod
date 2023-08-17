@@ -3,6 +3,7 @@ module github.com/kajiLabTeam/hacku-2023-back
 go 1.20
 
 require (
+	github.com/go-sql-driver/mysql v1.7.1
 	github.com/spf13/viper v1.16.0
 	gorm.io/driver/mysql v1.5.1
 	gorm.io/gorm v1.25.2
