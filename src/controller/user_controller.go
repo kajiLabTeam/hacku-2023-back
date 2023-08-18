@@ -7,6 +7,14 @@ import (
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
+type Short struct {
+	ID     int    `json:"id"`
+	Title  string `json:"title"`
+	Slide  string `json:"slide"`
+	Views  int    `json:"views"`
+	Poster string `json:"poster"`
+}
+
 func GetProfile(c *gin.Context) {
 	type Achievement struct {
 		Name string `json:"name"`
@@ -75,4 +83,54 @@ func GetProfile(c *gin.Context) {
 	result := Data{Achievements: a, Report: r}
 	//出力
 	c.JSON(http.StatusOK, result)
+}
+
+func GetBrowsingHistory(c *gin.Context) {
+	page := c.DefaultQuery("page", "")
+	//本来はトークンから取得
+	u_id := "0000000000000000000000000001"
+
+	var result []Short
+	bh := model.Get100BrowsingHistoryByUserID(u_id, page)
+	for i := 0; i < len(bh); i++ {
+		tmp := Short{
+			ID:     bh[i].ShortID,
+			Title:  model.GetShortByID(bh[i].ShortID).Title,
+			Slide:  model.GetThumbnailByShortID(bh[i].ShortID).SlideText,
+			Views:  len(model.GetBrowsingHistoryByShortID(bh[i].ShortID)),
+			Poster: model.GetUserByID(bh[i].UserID).UserName,
+		}
+		result = append(result, tmp)
+	}
+	if result == nil {
+		result = []Short{}
+	}
+	//出力
+	c.JSON(http.StatusOK, gin.H{"browsingHistories": result})
+
+}
+
+func GetPostingHistory(c *gin.Context) {
+	page := c.DefaultQuery("page", "")
+	//本来はトークンから取得
+	u_id := "0000000000000000000000000001"
+
+	var result []Short
+	ph := model.Get100ShortByUserID(u_id, page)
+	for i := 0; i < len(ph); i++ {
+		tmp := Short{
+			ID:     ph[i].ID,
+			Title:  ph[i].Title,
+			Slide:  model.GetThumbnailByShortID(ph[i].ID).SlideText,
+			Views:  len(model.GetBrowsingHistoryByShortID(ph[i].ID)),
+			Poster: model.GetUserByID(ph[i].UserID).UserName,
+		}
+		result = append(result, tmp)
+	}
+	if result == nil {
+		result = []Short{}
+	}
+	//出力
+	c.JSON(http.StatusOK, gin.H{"postingHistories": result})
+
 }

@@ -2,6 +2,8 @@ package model
 
 import (
 	"errors"
+	"fmt"
+	"strconv"
 	"time"
 
 	"gorm.io/gorm"
@@ -31,6 +33,21 @@ func GetShortByID(id int) *Short {
 func GetShortByIDArray(id []int) []Short {
 	s := []Short{}
 	result := db.Where("id IN (?)", id).Find(&s).Distinct("id")
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return s
+}
+
+func Get100ShortByUserID(id string, page string) []Short {
+	s := []Short{}
+	offset, err := strconv.Atoi(page)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	offset = (offset - 1) * 100
+	result := db.Where("user_id =?", id).Limit(100).Offset(offset).Find(&s)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
