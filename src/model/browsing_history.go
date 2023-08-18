@@ -62,8 +62,8 @@ func GetBrowsingHistoryByUserIDAndDay(id string, day string) []BrowsingHistory {
 func GetBrowsingDayByUserID(id string) []string {
 	var u_dates []time.Time
 	var result []string
-	db.Where("user_id =?", id).Model(&BrowsingHistory{}).Select("DISTINCT DATE(read_at) as read_date").Order("read_date").Scan(&u_dates)
-	for i := 0; i < len(u_dates); i++ {
+	db.Where("user_id =?", id).Model(&BrowsingHistory{}).Select("DISTINCT DATE(read_at) as read_date").Order("read_date desc").Limit(7).Scan(&u_dates)
+	for i := len(u_dates) - 1; i >= 0; i-- {
 		result = append(result, u_dates[i].Format("2006-01-02 15:04:05 +0900"))
 	}
 	return result

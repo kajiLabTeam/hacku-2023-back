@@ -55,10 +55,18 @@ func InsertTestData() {
 		{ID: 4, ShortID: short[3].ID, SlideText: "なんか違うね", VoiceURL: "ydyy/ytyy", PageNumber: 2, Script: "クエー?"},
 	}
 	browsinghistory := []BrowsingHistory{
-		{ID: 1, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now()},
-		{ID: 2, UserID: user[1].ID, ShortID: short[3].ID, ReadAt: time.Now()},
-		{ID: 3, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
-		{ID: 4, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
+		{ID: 1, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now().AddDate(0, 0, -8)},
+		{ID: 2, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -8)},
+		{ID: 3, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -7)},
+		{ID: 4, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -6)},
+		{ID: 5, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now().AddDate(0, 0, -6)},
+		{ID: 6, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -4)},
+		{ID: 7, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -4)},
+		{ID: 8, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -3)},
+		{ID: 9, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now().AddDate(0, 0, -3)},
+		{ID: 10, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -1)},
+		{ID: 11, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -1)},
+		{ID: 12, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
 	}
 	reaction := []Reaction{
 		{ID: 1, UserID: user[0].ID, ShortID: short[3].ID, ReactionListID: reaction_list[0].ID},
