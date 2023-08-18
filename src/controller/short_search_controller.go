@@ -65,9 +65,9 @@ func SearchShort(c *gin.Context) {
 	//json用に抽出したShortをもとに構造体を作成
 
 	type Slide struct {
-		Script   string `json:"script"`
-		Content  string `json:"slide"`
-		VoiceURL string `json:"voiceURL"`
+		Script  string `json:"script"`
+		Content string `json:"slide"`
+		Voice   string `json:"voiceURL"`
 	}
 
 	type Reaction struct {
@@ -99,9 +99,9 @@ func SearchShort(c *gin.Context) {
 		sl := []Slide{}
 		for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
 			tmp := Slide{
-				Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
-				Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
-				VoiceURL: model.GetSlideByShortID(s[i].ID)[j].VoiceURL,
+				Script:  model.GetSlideByShortID(s[i].ID)[j].Script,
+				Content: model.GetSlideByShortID(s[i].ID)[j].SlideText,
+				Voice:   model.GetSlideByShortID(s[i].ID)[j].Voice,
 			}
 			sl = append(sl, tmp)
 		}

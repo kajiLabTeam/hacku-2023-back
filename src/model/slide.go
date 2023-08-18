@@ -11,7 +11,7 @@ type Slide struct {
 	ShortID   int    `json:"shortId"`
 	SlideText string `json:"slideText"`
 	//SlideURL   string `json:"slideUrl"`
-	VoiceURL   string `json:"voiceUrl"`
+	Voice      string `json:"voiceUrl"`
 	Script     string `json:"script"`
 	PageNumber int    `json:"pageNumber"`
 }

@@ -49,10 +49,10 @@ func InsertTestData() {
 		{ID: 9, KeywordID: keyword[2].ID, ShortID: short[3].ID},
 	}
 	slide := []Slide{
-		{ID: 1, ShortID: short[0].ID, SlideText: "GOがよくわからん", VoiceURL: "yyy/yyy", PageNumber: 1, Script: "ゴーがよくわからねえのだ"},
-		{ID: 2, ShortID: short[0].ID, SlideText: "わからぬ", VoiceURL: "yyy/yyy", PageNumber: 2, Script: "わからぬ"},
-		{ID: 3, ShortID: short[3].ID, SlideText: "GOとjavaを比べるよ", VoiceURL: "yyy24/yyyh", PageNumber: 1, Script: "クエー!!"},
-		{ID: 4, ShortID: short[3].ID, SlideText: "なんか違うね", VoiceURL: "ydyy/ytyy", PageNumber: 2, Script: "クエー?"},
+		{ID: 1, ShortID: short[0].ID, SlideText: "GOがよくわからん", Voice: "hoge.mp3", PageNumber: 1, Script: "ゴーがよくわからねえのだ"},
+		{ID: 2, ShortID: short[0].ID, SlideText: "わからぬ", Voice: "auhs.mp3", PageNumber: 2, Script: "わからぬ"},
+		{ID: 3, ShortID: short[3].ID, SlideText: "GOとjavaを比べるよ", Voice: "yyy.mp3", PageNumber: 1, Script: "クエー!!"},
+		{ID: 4, ShortID: short[3].ID, SlideText: "なんか違うね", Voice: "qaw.mp3", PageNumber: 2, Script: "クエー?"},
 	}
 	browsinghistory := []BrowsingHistory{
 		{ID: 1, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now().AddDate(0, 0, -8)},

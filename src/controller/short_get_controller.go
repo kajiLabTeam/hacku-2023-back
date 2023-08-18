@@ -10,9 +10,9 @@ import (
 
 func GetShort(c *gin.Context) {
 	type Slide struct {
-		Script   string `json:"script"`
-		Content  string `json:"slide"`
-		VoiceURL string `json:"voiceURL"`
+		Script  string `json:"script"`
+		Content string `json:"slide"`
+		Voice   string `json:"voice"`
 	}
 
 	type Reaction struct {
@@ -52,9 +52,9 @@ func GetShort(c *gin.Context) {
 			sl := []Slide{}
 			for i := 0; i < len(model.GetSlideByShortID(s.ID)); i++ {
 				tmp := Slide{
-					Script:   model.GetSlideByShortID(s.ID)[i].Script,
-					Content:  model.GetSlideByShortID(s.ID)[i].SlideText,
-					VoiceURL: model.GetSlideByShortID(s.ID)[i].VoiceURL,
+					Script:  model.GetSlideByShortID(s.ID)[i].Script,
+					Content: model.GetSlideByShortID(s.ID)[i].SlideText,
+					Voice:   model.GetSlideByShortID(s.ID)[i].Voice,
 				}
 				sl = append(sl, tmp)
 			}
@@ -107,9 +107,9 @@ func GetShort(c *gin.Context) {
 				sl := []Slide{}
 				for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
 					tmp := Slide{
-						Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
-						Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
-						VoiceURL: model.GetSlideByShortID(s[i].ID)[j].VoiceURL,
+						Script:  model.GetSlideByShortID(s[i].ID)[j].Script,
+						Content: model.GetSlideByShortID(s[i].ID)[j].SlideText,
+						Voice:   model.GetSlideByShortID(s[i].ID)[j].Voice,
 					}
 					sl = append(sl, tmp)
 				}
@@ -157,9 +157,9 @@ func GetShort(c *gin.Context) {
 				sl := []Slide{}
 				for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
 					tmp := Slide{
-						Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
-						Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
-						VoiceURL: model.GetSlideByShortID(s[i].ID)[j].VoiceURL,
+						Script:  model.GetSlideByShortID(s[i].ID)[j].Script,
+						Content: model.GetSlideByShortID(s[i].ID)[j].SlideText,
+						Voice:   model.GetSlideByShortID(s[i].ID)[j].Voice,
 					}
 					sl = append(sl, tmp)
 				}
