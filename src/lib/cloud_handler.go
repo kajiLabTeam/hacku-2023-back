@@ -27,7 +27,7 @@ func init() {
 	}
 }
 
-func CloudConnect() (*storage.BucketHandle, error) {
+func StorageConnect() (*storage.BucketHandle, error) {
 	client, err := app.Storage(context.Background())
 	if err != nil {
 		return nil, fmt.Errorf("error initializing app: %v", err)
