@@ -21,6 +21,15 @@ func GetAchievementByID(id int) *Achievement {
 	return &a
 }
 
+func GetAchievementByUserID(id string) []Achievement {
+	a := []Achievement{}
+	result := db.Where("user_id = ?", id).Find(&a)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return a
+}
+
 func InsertAchievement(a Achievement) {
 	db.Create(&a)
 }

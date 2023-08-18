@@ -17,9 +17,12 @@ func InsertTestData() {
 		{ID: 6, KeywordName: "MySQL"},
 	}
 	genre := []Genre{
-		{ID: 1, GenreName: "プログラミング言語"},
+		{ID: 1, GenreName: "web"},
 		{ID: 2, GenreName: "バックエンド"},
-		{ID: 3, GenreName: "フロントエンド"},
+		{ID: 3, GenreName: "モバイル"},
+		{ID: 4, GenreName: "インフラ"},
+		{ID: 5, GenreName: "ゲーム"},
+		{ID: 6, GenreName: "その他"},
 	}
 	reaction_list := []ReactionList{
 		{ID: 1, ReactionName: "heart"},
@@ -55,6 +58,7 @@ func InsertTestData() {
 		{ID: 1, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now()},
 		{ID: 2, UserID: user[1].ID, ShortID: short[3].ID, ReadAt: time.Now()},
 		{ID: 3, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
+		{ID: 4, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
 	}
 	reaction := []Reaction{
 		{ID: 1, UserID: user[0].ID, ShortID: short[3].ID, ReactionListID: reaction_list[0].ID},
