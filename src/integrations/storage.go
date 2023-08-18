@@ -6,7 +6,9 @@ import (
 	"io"
 	"log"
 	"os"
+	"time"
 
+	"cloud.google.com/go/storage"
 	"github.com/kajiLabTeam/hacku-2023-back/lib"
 )
 
@@ -47,4 +49,22 @@ func Storage(fn string) (string, error) {
 	}
 
 	return remotePath, nil
+}
+
+func GetFileUrl(rp string) (string, error) {
+	bucket, err := lib.CloudConnect()
+	if err != nil {
+		return "", fmt.Errorf("error getting bucket: %v", err)
+	}
+	opts := &storage.SignedURLOptions{
+		Method:  "GET",
+		Expires: time.Now().Add(15 * time.Minute),
+	}
+
+	u, err := bucket.SignedURL(rp, opts)
+	if err != nil {
+		return "", fmt.Errorf("Bucket.SignedURL: %w", err)
+	}
+	return u, nil
+
 }
