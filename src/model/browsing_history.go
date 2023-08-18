@@ -3,6 +3,7 @@ package model
 import (
 	"errors"
 	"fmt"
+	"strconv"
 	"strings"
 	"time"
 
@@ -67,6 +68,21 @@ func GetBrowsingDayByUserID(id string) []string {
 		result = append(result, u_dates[i].Format("2006-01-02 15:04:05 +0900"))
 	}
 	return result
+}
+
+func Get100BrowsingHistoryByUserID(id string, page string) []BrowsingHistory {
+	bh := []BrowsingHistory{}
+	offset, err := strconv.Atoi(page)
+	if err != nil {
+		fmt.Println("Error:", err)
+	}
+
+	offset = (offset - 1) * 100
+	result := db.Where("user_id =?", id).Limit(100).Offset(offset).Find(&bh)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return bh
 }
 
 func InsertBrowsingHistory(bh BrowsingHistory) {
