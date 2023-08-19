@@ -54,7 +54,7 @@ func InsertTestData() {
 	for i := 0; i < len(user); i++ {
 		InsertUser(user[i])
 	}
-	for i := 0; i < len(keyword); i++ {
+	for i := 0; i < len(keyword); i++ {// キーワードをデータベースに入れる
 		InsertKeyword(keyword[i])
 	}
 	InsertGenre(genre)
