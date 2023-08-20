@@ -7,6 +7,7 @@ import (
 
 	"cloud.google.com/go/storage"
 	firebase "firebase.google.com/go"
+	"firebase.google.com/go/auth"
 	"github.com/kajiLabTeam/hacku-2023-back/conf"
 
 	"google.golang.org/api/option"
@@ -27,7 +28,7 @@ func init() {
 	}
 }
 
-func CloudConnect() (*storage.BucketHandle, error) {
+func StorageConnect() (*storage.BucketHandle, error) {
 	client, err := app.Storage(context.Background())
 	if err != nil {
 		return nil, fmt.Errorf("error initializing app: %v", err)
@@ -38,4 +39,13 @@ func CloudConnect() (*storage.BucketHandle, error) {
 		return nil, fmt.Errorf("error initializing app: %v", err)
 	}
 	return bucket, nil
+}
+
+func AuthorizationConnect() *auth.Client {
+	client, err := app.Auth(context.Background())
+	if err != nil {
+		log.Fatalf("error initializeing app: %v", err)
+	}
+
+	return client
 }
