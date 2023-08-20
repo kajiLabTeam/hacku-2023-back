@@ -11,7 +11,7 @@ GET http://localhost:8000/api/short/search?tags=Go&title=go HTTP/1.1
 
 
 ### ショートを投稿する時
-POST http://localhost:8000/api/short/post/t HTTP/1.1
+POST http://localhost:8000/api/short/post HTTP/1.1
 Content-Type: application/json
 Accept: application/json
 Authorization: Bearer NLbo4bPckPbLGrsxDb2zoPMr8c83
@@ -22,7 +22,7 @@ Authorization: Bearer NLbo4bPckPbLGrsxDb2zoPMr8c83
   "slides": [
     {
       "script": "それでは、1分でわかるJS講座を始めるのだ...",
-      "slide": "# JSとは\n- 型がないのでエラーがでない！！", // バックエンドでVoice_Linkに変換される値
+      "slide": "# JSとは\n- 型がないのでエラーがでない！！"
     },
     {
       "script": "JSは型がないのでTSよりも扱いやすいのだ...",
