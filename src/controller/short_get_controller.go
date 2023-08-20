@@ -12,7 +12,7 @@ func GetShort(c *gin.Context) {
 	type Slide struct {
 		Script   string `json:"script"`
 		Content  string `json:"slide"`
-		VoiceURL string `json:"voiceUrl"`
+		VoiceURL string `json:"voiceURL"`
 	}
 
 	type Reaction struct {
