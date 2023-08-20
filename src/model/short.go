@@ -39,6 +39,15 @@ func GetShortByIDArray(id []int) []Short {
 	return s
 }
 
+func GetShortByTitle(title string) []Short {
+	s := []Short{}
+	result := db.Where("title LIKE ?", "%"+title+"%").Find(&s)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return s
+}
+
 func Get100ShortByUserID(id string, page string) []Short {
 	s := []Short{}
 	offset, err := strconv.Atoi(page)
@@ -56,7 +65,7 @@ func Get100ShortByUserID(id string, page string) []Short {
 
 func GetRundumShort() []Short {
 	s := []Short{}
-	result := db.Order("RANDOM()").Limit(10).Find(&s)
+	result := db.Order("RAND()").Limit(10).Find(&s)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}
