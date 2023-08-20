@@ -25,7 +25,7 @@ func Storage(fn string) (string, error) {
 
 	// storageにファイルをアップロード
 	ctx := context.Background()
-	bucket, err := lib.CloudConnect()
+	bucket, err := lib.StorageConnect()
 	if err != nil {
 		return "", fmt.Errorf("error getting bucket: %v", err)
 	}
@@ -52,7 +52,7 @@ func Storage(fn string) (string, error) {
 }
 
 func GetFileUrl(rp string) (string, error) {
-	bucket, err := lib.CloudConnect()
+	bucket, err := lib.StorageConnect()
 	if err != nil {
 		return "", fmt.Errorf("error getting bucket: %v", err)
 	}
