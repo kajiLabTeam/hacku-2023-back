@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"time"
 
 	"github.com/gin-gonic/gin"
 	"github.com/kajiLabTeam/hacku-2023-back/model"
@@ -54,7 +55,11 @@ func GetProfile(c *gin.Context) {
 		}
 		a = append(a, tmp)
 	}
-	dates := model.GetBrowsingDayByUserID(u_id)
+	var dates []string
+	for i := 6; i >= 0; i-- {
+		tmp := time.Now().AddDate(0, 0, -i).Format("2006-01-02 15:04:05 +0900")
+		dates = append(dates, tmp)
+	}
 	all_g := model.GetAllGenre()
 	for i := 0; i < len(dates); i++ {
 
