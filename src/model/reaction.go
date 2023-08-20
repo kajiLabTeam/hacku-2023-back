@@ -9,7 +9,7 @@ import (
 type Reaction struct {
 	ID             int    `gorm:"primaryKey;autoIncrement" json:"id"`
 	UserID         string `gorm:"type:varchar(28)" json:"userId"`
-	ShoatID        int    `json:"shoatId"`
+	ShortID        int    `json:"shoatId"`
 	ReactionListID int    `json:"reactionListId"`
 }
 

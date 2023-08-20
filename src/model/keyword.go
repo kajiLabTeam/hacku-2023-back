@@ -9,6 +9,7 @@ import (
 type Keyword struct {
 	ID          int         `gorm:"primaryKey;autoIncrement" json:"id"`
 	KeywordName string      `json:"keywordName"`
+	ImageURL    string      `json:"imageUrl"`
 	Achievement Achievement `gorm:"foreignkey:KeywordID"`
 	Tags        []Tag       `gorm:"foreignkey:KeywordID"`
 }
