@@ -9,7 +9,7 @@ import (
 	"github.com/kajiLabTeam/hacku-2023-back/service"
 )
 
-func PutShort(c *gin.Context) {
+func PostShort(c *gin.Context) {
 	var req model.Short
 	h := c.Request.Header.Get("Authorization")
 	a := strings.TrimPrefix(h, "Bearer ")
