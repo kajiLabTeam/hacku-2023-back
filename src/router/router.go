@@ -16,7 +16,11 @@ func Init() {
 	})
 
 	r.GET("/api/short/search", controller.SearchShort)
+	r.GET("/api/short/get", controller.GetShort)
 	r.GET("/api/short/get/:shortId", controller.GetShort)
+	r.GET("/api/user/profile", controller.GetProfile)
+	r.GET("/api/user/post/history/get/", controller.GetPostingHistory)
+	r.GET("/api/user/browsing/history/", controller.GetBrowsingHistory)
 
 	r.Run(":8000")
 }

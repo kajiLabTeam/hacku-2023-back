@@ -63,31 +63,82 @@ func SearchShort(c *gin.Context) {
 	}
 
 	//json用に抽出したShortをもとに構造体を作成
+
+	type Slide struct {
+		Script  string `json:"script"`
+		Content string `json:"slide"`
+		Voice   string `json:"voiceURL"`
+	}
+
+	type Reaction struct {
+		Count   int  `json:"count"`
+		Reacted bool `json:"reacted"`
+	}
+	type Reactions struct {
+		Heart Reaction `json:"heart"`
+		Good  Reaction `json:"good"`
+		Smile Reaction `json:"smile"`
+	}
+
 	type ShortOutPut struct {
-		ID       int    `json:"id"`
-		Title    string `json:"title"`
-		Slide    string `json:"slide"`
-		VoiceURL string `json:"voiceURL"`
-		Views    int    `json:"views"`
-		Speaker  string `json:"speaker"`
-		Poster   string `json:"poster"`
+		ID        int       `json:"id"`
+		Title     string    `json:"title"`
+		Speaker   string    `json:"speaker"`
+		Slides    []Slide   `json:"slides"`
+		Tags      []string  `json:"tags"`
+		Genre     string    `json:"genre"`
+		Views     int       `json:"views"`
+		Poster    string    `json:"poster"`
+		CreatedAt string    `json:"createdAt"`
+		Reactions Reactions `json:"reactions"`
 	}
 
 	//作った構造体にデータを入れる
 	result := []ShortOutPut{}
 	for i := 0; i < len(s); i++ {
-		s_out := ShortOutPut{
-			ID:       s[i].ID,
-			Title:    s[i].Title,
-			Slide:    model.GetThumbnailByShortID(s[i].ID).SlideText,
-			VoiceURL: model.GetThumbnailByShortID(s[i].ID).VoiceURL,
-			Views:    len(model.GetBrowsingHistoryByShortID(s[i].ID)),
-			Speaker:  s[i].Speaker,
-			Poster:   model.GetUserByID(s[i].UserID).UserName,
+		sl := []Slide{}
+		for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
+			tmp := Slide{
+				Script:  model.GetSlideByShortID(s[i].ID)[j].Script,
+				Content: model.GetSlideByShortID(s[i].ID)[j].SlideText,
+				Voice:   model.GetSlideByShortID(s[i].ID)[j].Voice,
+			}
+			sl = append(sl, tmp)
 		}
-		result = append(result, s_out)
+		t := []string{}
+		for j := 0; j < len(model.GetTagByShortID(s[i].ID)); j++ {
+			t = append(t, model.GetKeywordByID(model.GetTagByShortID(s[i].ID)[j].KeywordID).KeywordName)
+		}
+		r := []Reaction{}
+		rl := model.GetReactionList()
+		for j := 0; j < len(rl); j++ {
+			tmp := Reaction{
+				Count:   len(model.GetReactionByShortID(s[i].ID, rl[j].ID)),
+				Reacted: true}
+			r = append(r, tmp)
+		}
+		rs := Reactions{
+			Heart: r[0],
+			Good:  r[1],
+			Smile: r[2],
+		}
+		// 日にちまでのフォーマット
+		dateFormat := "2006-01-02"
+		fDate := s[i].CreatedAt.Format(dateFormat)
+		tmp := ShortOutPut{
+			ID:        s[i].ID,
+			Title:     s[i].Title,
+			Speaker:   s[i].Speaker,
+			Slides:    sl,
+			Tags:      t,
+			Genre:     model.GetGenreByID(s[i].GenreID).GenreName,
+			Views:     len(model.GetBrowsingHistoryByShortID(s[i].ID)),
+			Poster:    model.GetUserByID(s[i].UserID).UserName,
+			CreatedAt: fDate,
+			Reactions: rs,
+		}
+		result = append(result, tmp)
 	}
-
 	//出力
 	c.JSON(http.StatusOK, gin.H{"shorts": result})
 

@@ -17,9 +17,12 @@ func InsertTestData() {
 		{ID: 6, KeywordName: "MySQL"},
 	}
 	genre := []Genre{
-		{ID: 1, GenreName: "プログラミング言語"},
+		{ID: 1, GenreName: "web"},
 		{ID: 2, GenreName: "バックエンド"},
-		{ID: 3, GenreName: "フロントエンド"},
+		{ID: 3, GenreName: "モバイル"},
+		{ID: 4, GenreName: "インフラ"},
+		{ID: 5, GenreName: "ゲーム"},
+		{ID: 6, GenreName: "その他"},
 	}
 	reaction_list := []ReactionList{
 		{ID: 1, ReactionName: "heart"},
@@ -46,22 +49,31 @@ func InsertTestData() {
 		{ID: 9, KeywordID: keyword[2].ID, ShortID: short[3].ID},
 	}
 	slide := []Slide{
-		{ID: 1, ShortID: short[0].ID, SlideText: "GOがよくわからん", VoiceURL: "yyy/yyy", PageNumber: 1, Script: "ゴーがよくわからねえのだ"},
-		{ID: 2, ShortID: short[0].ID, SlideText: "わからぬ", VoiceURL: "yyy/yyy", PageNumber: 2, Script: "わからぬ"},
-		{ID: 3, ShortID: short[3].ID, SlideText: "GOとjavaを比べるよ", VoiceURL: "yyy24/yyyh", PageNumber: 1, Script: "クエー!!"},
-		{ID: 4, ShortID: short[3].ID, SlideText: "なんか違うね", VoiceURL: "ydyy/ytyy", PageNumber: 2, Script: "クエー?"},
+		{ID: 1, ShortID: short[0].ID, SlideText: "GOがよくわからん", Voice: "hoge.mp3", PageNumber: 1, Script: "ゴーがよくわからねえのだ"},
+		{ID: 2, ShortID: short[0].ID, SlideText: "わからぬ", Voice: "auhs.mp3", PageNumber: 2, Script: "わからぬ"},
+		{ID: 3, ShortID: short[3].ID, SlideText: "GOとjavaを比べるよ", Voice: "yyy.mp3", PageNumber: 1, Script: "クエー!!"},
+		{ID: 4, ShortID: short[3].ID, SlideText: "なんか違うね", Voice: "qaw.mp3", PageNumber: 2, Script: "クエー?"},
 	}
 	browsinghistory := []BrowsingHistory{
-		{ID: 1, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now()},
-		{ID: 2, UserID: user[1].ID, ShortID: short[3].ID, ReadAt: time.Now()},
-		{ID: 3, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
+		{ID: 1, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now().AddDate(0, 0, -8)},
+		{ID: 2, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -8)},
+		{ID: 3, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -7)},
+		{ID: 4, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -6)},
+		{ID: 5, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now().AddDate(0, 0, -6)},
+		{ID: 6, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -4)},
+		{ID: 7, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -4)},
+		{ID: 8, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -3)},
+		{ID: 9, UserID: user[0].ID, ShortID: short[0].ID, ReadAt: time.Now().AddDate(0, 0, -3)},
+		{ID: 10, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -1)},
+		{ID: 11, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now().AddDate(0, 0, -1)},
+		{ID: 12, UserID: user[0].ID, ShortID: short[3].ID, ReadAt: time.Now()},
 	}
 	reaction := []Reaction{
-		{ID: 1, UserID: user[0].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[0].ID},
-		{ID: 2, UserID: user[1].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[0].ID},
-		{ID: 3, UserID: user[2].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[1].ID},
-		{ID: 4, UserID: user[0].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[1].ID},
-		{ID: 5, UserID: user[1].ID, ShoatID: short[3].ID, ReactionListID: reaction_list[2].ID},
+		{ID: 1, UserID: user[0].ID, ShortID: short[3].ID, ReactionListID: reaction_list[0].ID},
+		{ID: 2, UserID: user[1].ID, ShortID: short[3].ID, ReactionListID: reaction_list[0].ID},
+		{ID: 3, UserID: user[2].ID, ShortID: short[3].ID, ReactionListID: reaction_list[1].ID},
+		{ID: 4, UserID: user[0].ID, ShortID: short[3].ID, ReactionListID: reaction_list[1].ID},
+		{ID: 5, UserID: user[1].ID, ShortID: short[3].ID, ReactionListID: reaction_list[2].ID},
 	}
 	for i := 0; i < len(user); i++ {
 		InsertUser(user[i])
