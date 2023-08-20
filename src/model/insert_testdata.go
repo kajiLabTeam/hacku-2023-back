@@ -4,7 +4,7 @@ import "time"
 
 func InsertTestData() {
 	user := []User{
-		{ID: "0000000000000000000000000001", UserName: "mizutani"},
+		{ID: "cuidubv6Isgws8qba8oGGA0jd1i2", UserName: "mizutani"},
 		{ID: "0000000000000000000000000002", UserName: "shika"},
 		{ID: "0000000000000000000000000003", UserName: "hoge"},
 	}

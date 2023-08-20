@@ -3,12 +3,22 @@ package controller
 import (
 	"net/http"
 	"strconv"
+	"strings"
+	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kajiLabTeam/hacku-2023-back/integrations"
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
 func GetShort(c *gin.Context) {
+	authHeader := c.Request.Header.Get("Authorization")
+	header := strings.TrimPrefix(authHeader, "Bearer ")
+	token, err := integrations.GetUserByID(header)
+	if err != nil {
+		print(err)
+	}
+	u_id := token.UID
 	type Slide struct {
 		Script   string `json:"script"`
 		Content  string `json:"slide"`
@@ -48,7 +58,6 @@ func GetShort(c *gin.Context) {
 		}
 		s := model.GetShortByID(s_id)
 		if s != nil && s.GenreID != 0 {
-
 			sl := []Slide{}
 			for i := 0; i < len(model.GetSlideByShortID(s.ID)); i++ {
 				tmp := Slide{
@@ -65,9 +74,20 @@ func GetShort(c *gin.Context) {
 			r := []Reaction{}
 			rl := model.GetReactionList()
 			for i := 0; i < len(rl); i++ {
+				u_r := model.GetReactionByShortID(s.ID, rl[i].ID)
+				count := 0
+				reac := false
+				for j := 0; j < len(u_r); j++ {
+					if u_r[j].UserID == u_id {
+						count++
+					}
+				}
+				if count == 1 {
+					reac = true
+				}
 				tmp := Reaction{
 					Count:   len(model.GetReactionByShortID(s.ID, rl[i].ID)),
-					Reacted: true}
+					Reacted: reac}
 				r = append(r, tmp)
 			}
 			print(r[0].Count)
@@ -93,113 +113,72 @@ func GetShort(c *gin.Context) {
 			}
 			//出力
 			c.JSON(http.StatusOK, gin.H{"shorts": result})
+			model.InsertBrowsingHistory(model.BrowsingHistory{UserID: u_id, ShortID: s_id, ReadAt: time.Now()})
 		} else {
 			c.JSON(http.StatusOK, gin.H{
 				"message": "Unknown ShortID",
 			})
 		}
 	} else {
-		s := model.GetAllShort()
-		if len(s) <= 10 {
-			//作った構造体にデータを入れる
-			result := []Presentation{}
-			for i := 0; i < len(s); i++ {
-				sl := []Slide{}
-				for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
-					tmp := Slide{
-						Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
-						Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
-						VoiceURL: model.GetSlideByShortID(s[i].ID)[j].Voice,
-					}
-					sl = append(sl, tmp)
+		s := model.GetRundumShort()
+		//作った構造体にデータを入れる
+		result := []Presentation{}
+		for i := 0; i < len(s); i++ {
+			sl := []Slide{}
+			for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
+				tmp := Slide{
+					Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
+					Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
+					VoiceURL: model.GetSlideByShortID(s[i].ID)[j].Voice,
 				}
-				t := []string{}
-				for j := 0; j < len(model.GetTagByShortID(s[i].ID)); j++ {
-					t = append(t, model.GetKeywordByID(model.GetTagByShortID(s[i].ID)[j].KeywordID).KeywordName)
-				}
-				r := []Reaction{}
-				rl := model.GetReactionList()
-				for j := 0; j < len(rl); j++ {
-					tmp := Reaction{
-						Count:   len(model.GetReactionByShortID(s[i].ID, rl[j].ID)),
-						Reacted: true}
-					r = append(r, tmp)
-				}
-				rs := Reactions{
-					Heart: r[0],
-					Good:  r[1],
-					Smile: r[2],
-				}
-				// 日にちまでのフォーマット
-				dateFormat := "2006-01-02"
-				fDate := s[i].CreatedAt.Format(dateFormat)
-				tmp := Presentation{
-					ID:        s[i].ID,
-					Title:     s[i].Title,
-					Speaker:   s[i].Speaker,
-					Slides:    sl,
-					Tags:      t,
-					Genre:     model.GetGenreByID(s[i].GenreID).GenreName,
-					Views:     len(model.GetBrowsingHistoryByShortID(s[i].ID)),
-					Poster:    model.GetUserByID(s[i].UserID).UserName,
-					CreatedAt: fDate,
-					Reactions: rs,
-				}
-				result = append(result, tmp)
+				sl = append(sl, tmp)
 			}
-			//出力
-			c.JSON(http.StatusOK, gin.H{"shorts": result})
-		} else {
-			s := model.GetRundumShort()
-			//作った構造体にデータを入れる
-			result := []Presentation{}
-			for i := 0; i < len(s); i++ {
-				sl := []Slide{}
-				for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
-					tmp := Slide{
-						Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
-						Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
-						VoiceURL: model.GetSlideByShortID(s[i].ID)[j].Voice,
-					}
-					sl = append(sl, tmp)
-				}
-				t := []string{}
-				for j := 0; j < len(model.GetTagByShortID(s[i].ID)); j++ {
-					t = append(t, model.GetKeywordByID(model.GetTagByShortID(s[i].ID)[j].KeywordID).KeywordName)
-				}
-				r := []Reaction{}
-				rl := model.GetReactionList()
-				for j := 0; j < len(rl); j++ {
-					tmp := Reaction{
-						Count:   len(model.GetReactionByShortID(s[i].ID, rl[j].ID)),
-						Reacted: true}
-					r = append(r, tmp)
-				}
-				rs := Reactions{
-					Heart: r[0],
-					Good:  r[1],
-					Smile: r[2],
-				}
-				// 日にちまでのフォーマット
-				dateFormat := "2006-01-02"
-				fDate := s[i].CreatedAt.Format(dateFormat)
-				tmp := Presentation{
-					ID:        s[i].ID,
-					Title:     s[i].Title,
-					Speaker:   s[i].Speaker,
-					Slides:    sl,
-					Tags:      t,
-					Genre:     model.GetGenreByID(s[i].GenreID).GenreName,
-					Views:     len(model.GetBrowsingHistoryByShortID(s[i].ID)),
-					Poster:    model.GetUserByID(s[i].UserID).UserName,
-					CreatedAt: fDate,
-					Reactions: rs,
-				}
-				result = append(result, tmp)
+			t := []string{}
+			for j := 0; j < len(model.GetTagByShortID(s[i].ID)); j++ {
+				t = append(t, model.GetKeywordByID(model.GetTagByShortID(s[i].ID)[j].KeywordID).KeywordName)
 			}
-			//出力
-			c.JSON(http.StatusOK, gin.H{"shorts": result})
+			r := []Reaction{}
+			rl := model.GetReactionList()
+			for j := 0; j < len(rl); j++ {
+				u_r := model.GetReactionByShortID(s[i].ID, rl[j].ID)
+				count := 0
+				reac := false
+				for l := 0; l < len(u_r); l++ {
+					if u_r[l].UserID == u_id {
+						count++
+					}
+				}
+				if count == 1 {
+					reac = true
+				}
+				tmp := Reaction{
+					Count:   len(model.GetReactionByShortID(s[i].ID, rl[j].ID)),
+					Reacted: reac}
+				r = append(r, tmp)
+			}
+			rs := Reactions{
+				Heart: r[0],
+				Good:  r[1],
+				Smile: r[2],
+			}
+			// 日にちまでのフォーマット
+			dateFormat := "2006-01-02"
+			fDate := s[i].CreatedAt.Format(dateFormat)
+			tmp := Presentation{
+				ID:        s[i].ID,
+				Title:     s[i].Title,
+				Speaker:   s[i].Speaker,
+				Slides:    sl,
+				Tags:      t,
+				Genre:     model.GetGenreByID(s[i].GenreID).GenreName,
+				Views:     len(model.GetBrowsingHistoryByShortID(s[i].ID)),
+				Poster:    model.GetUserByID(s[i].UserID).UserName,
+				CreatedAt: fDate,
+				Reactions: rs,
+			}
+			result = append(result, tmp)
 		}
+		//出力
+		c.JSON(http.StatusOK, gin.H{"shorts": result})
 	}
-
 }

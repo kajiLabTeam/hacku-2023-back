@@ -5,10 +5,18 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kajiLabTeam/hacku-2023-back/integrations"
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
 func SearchShort(c *gin.Context) {
+	authHeader := c.Request.Header.Get("Authorization")
+	header := strings.TrimPrefix(authHeader, "Bearer ")
+	token, err := integrations.GetUserByID(header)
+	if err != nil {
+		print(err)
+	}
+	u_id := token.UID
 	tags := c.DefaultQuery("tags", "")
 	title := c.DefaultQuery("title", "")
 	var s []model.Short
@@ -47,8 +55,8 @@ func SearchShort(c *gin.Context) {
 		s = model.GetShortByIDArray(s_id)
 
 	} else if tags == "" && title != "" {
-		//Tagsの入力なしでTitleに入力ある時はショートを全件取得
-		s = model.GetAllShort()
+		//Tagsの入力なしでTitleに入力ある時
+		s = model.GetShortByTitle(title)
 	}
 
 	//titleに入力があれば部分一致抽出
@@ -112,9 +120,20 @@ func SearchShort(c *gin.Context) {
 		r := []Reaction{}
 		rl := model.GetReactionList()
 		for j := 0; j < len(rl); j++ {
+			u_r := model.GetReactionByShortID(s[i].ID, rl[j].ID)
+			count := 0
+			reac := false
+			for l := 0; l < len(u_r); l++ {
+				if u_r[l].UserID == u_id {
+					count++
+				}
+			}
+			if count == 1 {
+				reac = true
+			}
 			tmp := Reaction{
 				Count:   len(model.GetReactionByShortID(s[i].ID, rl[j].ID)),
-				Reacted: true}
+				Reacted: reac}
 			r = append(r, tmp)
 		}
 		rs := Reactions{
