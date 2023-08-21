@@ -23,7 +23,9 @@ func CreateShort(a string, req model.Short) error {
 	slides = append(slides, slide)
 	}
 
+	short.UserID = t.UID
 	short.Slides = slides
+	short.Speaker = req.Speaker
 	model.InsertShort(short)
 
 	return nil
