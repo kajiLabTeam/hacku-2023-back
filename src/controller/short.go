@@ -18,7 +18,7 @@ type Slide struct {
 	Slide  string `json:"slide"`
 }
 
-func PutShort(c *gin.Context) {
+func PostShort(c *gin.Context) {
 	var req ShortPost
 	h := c.Request.Header.Get("Authorization")
 	a := strings.TrimPrefix(h, "Bearer ")
