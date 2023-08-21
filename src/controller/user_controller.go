@@ -12,15 +12,14 @@ import (
 )
 
 func GetProfile(c *gin.Context) {
-	authHeader := c.Request.Header.Get("Authorization")
-	header := strings.TrimPrefix(authHeader, "Bearer ")
-
-	token, err := integrations.VerifyIDToken(header)
+	h := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(h, "Bearer ")
+	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
 
-	uid := token.UID
+	uid := t.UID
 
 	var a = []Achievement{}
 	colors := []string{
@@ -75,16 +74,15 @@ func GetProfile(c *gin.Context) {
 }
 
 func GetBrowsingHistory(c *gin.Context) {
-	page := c.DefaultQuery("page", "")
-	authHeader := c.Request.Header.Get("Authorization")
-	header := strings.TrimPrefix(authHeader, "Bearer ")
-
-	token, err := integrations.VerifyIDToken(header)
+	h := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(h, "Bearer ")
+	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
 
-	uid := token.UID
+	uid := t.UID
+	page := c.DefaultQuery("page", "")
 
 	var result []Short
 	bh := model.Get100BrowsingHistoryByUserID(uid, page)
@@ -107,16 +105,15 @@ func GetBrowsingHistory(c *gin.Context) {
 }
 
 func GetPostingHistory(c *gin.Context) {
-	page := c.DefaultQuery("page", "")
-	authHeader := c.Request.Header.Get("Authorization")
-	header := strings.TrimPrefix(authHeader, "Bearer ")
-
-	token, err := integrations.VerifyIDToken(header)
+	h := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(h, "Bearer ")
+	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
 
-	uid := token.UID
+	uid := t.UID
+	page := c.DefaultQuery("page", "")
 	var result []Short
 	offset, err := strconv.Atoi(page)
 	if err != nil {

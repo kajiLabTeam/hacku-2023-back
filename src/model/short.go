@@ -19,6 +19,12 @@ type Short struct {
 	Tags              []Tag             `gorm:"foreignkey:ShortID"`
 }
 
+type ShortPost struct {
+	Title   string  `json:"title"`
+	Speaker string  `json:"speaker"`
+	Slides  []SlidePost `json:"Slide"`
+}
+
 func GetShortByID(id int) *Short {
 	s := Short{}
 	result := db.Find(&s, id)

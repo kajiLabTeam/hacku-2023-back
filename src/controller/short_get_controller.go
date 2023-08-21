@@ -12,15 +12,14 @@ import (
 )
 
 func GetShort(c *gin.Context) {
-	authHeader := c.Request.Header.Get("Authorization")
-	header := strings.TrimPrefix(authHeader, "Bearer ")
-
-	token, err := integrations.VerifyIDToken(header)
+	h := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(h, "Bearer ")
+	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
 
-	uid := token.UID
+	uid := t.UID
 
 	sId := c.Param("shortId")
 	if sId != "" {
