@@ -1,6 +1,8 @@
 package service
 
 import (
+	"os"
+
 	"github.com/kajiLabTeam/hacku-2023-back/integrations"
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
@@ -77,6 +79,7 @@ func CreateShort(a string, req model.ShortPost) error {
 		slide.PageNumber = i
 		slide.Script = v.Script
 		slides = append(slides, slide)
+		os.Remove(fn)
 	}
 
 	short.UserID = t.UID
