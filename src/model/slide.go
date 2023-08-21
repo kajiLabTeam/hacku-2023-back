@@ -16,6 +16,11 @@ type Slide struct {
 	PageNumber int    `json:"pageNumber"`
 }
 
+type SlidePost struct {
+	Script string `json:"script"`
+	Slide  string `json:"slide"`
+}
+
 func GetSlideByID(id int) *Slide {
 	s := Slide{}
 	result := db.First(&s, id)
