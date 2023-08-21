@@ -15,6 +15,7 @@ func Init() {
 	r.GET("/api/user/post/history/get/", controller.GetPostingHistory)
 	r.GET("/api/user/browsing/history/", controller.GetBrowsingHistory)
 
+	r.POST("/api/user/post", controller.PostUser)
 	r.POST("/api/short/post", controller.PostShort)
 	r.POST("/api/short/:shortId/reaction/add/", controller.PostReaction)
 
