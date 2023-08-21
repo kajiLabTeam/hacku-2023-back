@@ -5,21 +5,12 @@ import (
 	"strings"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kajiLabTeam/hacku-2023-back/model"
 	"github.com/kajiLabTeam/hacku-2023-back/service"
 )
 
-type ShortPost struct {
-	Title   string  `json:"title"`
-	Speaker string  `json:"speaker"`
-	Slides  []Slide `json:"Slide"`
-}
-type Slide struct {
-	Script string `json:"script"`
-	Slide  string `json:"slide"`
-}
-
 func PostShort(c *gin.Context) {
-	var req ShortPost
+	var req model.ShortPost
 	h := c.Request.Header.Get("Authorization")
 	a := strings.TrimPrefix(h, "Bearer ")
 	if err := c.ShouldBindJSON(&req); err != nil {
