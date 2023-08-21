@@ -140,3 +140,19 @@ func GetPostingHistory(c *gin.Context) {
 	//出力
 	c.JSON(http.StatusOK, gin.H{"postingHistories": result})
 }
+
+func PostUser(c *gin.Context) {
+	auth := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(auth, "Bearer ")
+	t, err := integrations.VerifyIDToken(tId)
+	if err != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+		return
+	}
+
+	uid := t.UID
+
+	model.InsertUser(model.User{ID: uid, UserName: ""})
+
+	c.JSON(http.StatusOK, gin.H{"id": uid, "name": ""})
+}
