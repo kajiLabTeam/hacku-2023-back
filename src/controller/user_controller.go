@@ -2,9 +2,11 @@ package controller
 
 import (
 	"net/http"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
+	"github.com/kajiLabTeam/hacku-2023-back/integrations"
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
@@ -17,6 +19,14 @@ type Short struct {
 }
 
 func GetProfile(c *gin.Context) {
+	authHeader := c.Request.Header.Get("Authorization")
+	header := strings.TrimPrefix(authHeader, "Bearer ")
+	token, err := integrations.GetUserByID(header)
+	if err != nil {
+		print(err)
+	}
+	u_id := token.UID
+
 	type Achievement struct {
 		Name string `json:"name"`
 		Link string `json:"link"`
@@ -36,8 +46,6 @@ func GetProfile(c *gin.Context) {
 		Achievements []Achievement `json:"achievements"`
 		Report       Report        `json:"report"`
 	}
-	//本来はトークンから取得
-	u_id := "0000000000000000000000000001"
 	var a = []Achievement{}
 	colors := []string{
 		"245, 101, 101, 1",
@@ -92,8 +100,13 @@ func GetProfile(c *gin.Context) {
 
 func GetBrowsingHistory(c *gin.Context) {
 	page := c.DefaultQuery("page", "")
-	//本来はトークンから取得
-	u_id := "0000000000000000000000000001"
+	authHeader := c.Request.Header.Get("Authorization")
+	header := strings.TrimPrefix(authHeader, "Bearer ")
+	token, err := integrations.GetUserByID(header)
+	if err != nil {
+		print(err)
+	}
+	u_id := token.UID
 
 	var result []Short
 	bh := model.Get100BrowsingHistoryByUserID(u_id, page)
@@ -117,9 +130,13 @@ func GetBrowsingHistory(c *gin.Context) {
 
 func GetPostingHistory(c *gin.Context) {
 	page := c.DefaultQuery("page", "")
-	//本来はトークンから取得
-	u_id := "0000000000000000000000000001"
-
+	authHeader := c.Request.Header.Get("Authorization")
+	header := strings.TrimPrefix(authHeader, "Bearer ")
+	token, err := integrations.GetUserByID(header)
+	if err != nil {
+		print(err)
+	}
+	u_id := token.UID
 	var result []Short
 	ph := model.Get100ShortByUserID(u_id, page)
 	for i := 0; i < len(ph); i++ {
