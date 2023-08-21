@@ -3,7 +3,7 @@ d:
 up:
 	docker compose up -d
 log:
-	docker compose logs
+	docker compose logs -f
 ps:
 	docker compose ps
 mysql:
