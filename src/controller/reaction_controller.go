@@ -1,6 +1,8 @@
 package controller
 
 import (
+	"fmt"
+	"log"
 	"net/http"
 	"strconv"
 	"strings"
@@ -15,7 +17,7 @@ func PostReaction(c *gin.Context) {
 	tId := strings.TrimPrefix(auth, "Bearer ")
 	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -23,25 +25,35 @@ func PostReaction(c *gin.Context) {
 	sId := c.Param("shortId")
 	var req ReactionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	sIdInt, err := strconv.Atoi(sId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Invalid shortId",
+			"error": "Invalid shortId",
 		})
 		return
 	}
 
-	rId := model.GetReactionIDByName(req.Reaction)
+	rId, err := model.GetReactionIDByName(req.Reaction)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	if rId == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid reaction"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reaction"})
 		return
 	}
 
-	model.InsertReaction(model.Reaction{UserID: uid, ShortID: sIdInt, ReactionListID: *rId})
+	log.Println(uid, sIdInt, *rId, req.Reaction)
+
+	err = model.InsertReaction(model.Reaction{UserID: uid, ShortID: sIdInt, ReactionListID: *rId})
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 
 	c.JSON(http.StatusOK, gin.H{"reaction": req.Reaction})
 }
@@ -51,7 +63,7 @@ func DeleteReaction(c *gin.Context) {
 	tId := strings.TrimPrefix(auth, "Bearer ")
 	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -59,27 +71,33 @@ func DeleteReaction(c *gin.Context) {
 	sId := c.Param("shortId")
 	var req ReactionRequest
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 
 	sIdInt, err := strconv.Atoi(sId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{
-			"message": "Invalid shortId",
+			"error": "Invalid shortId",
 		})
 		return
 	}
 
-	rId := model.GetReactionIDByName(req.Reaction)
+	rId, err := model.GetReactionIDByName(req.Reaction)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
 	if rId == nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": "Invalid reaction"})
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Invalid reaction"})
 		return
 	}
 
+	fmt.Println(uid, sIdInt, *rId, *rId)
+
 	err = model.DeleteReaction(uid, sIdInt, *rId)
 	if err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 

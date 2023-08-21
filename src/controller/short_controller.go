@@ -15,7 +15,7 @@ func PostShort(c *gin.Context) {
 	tId := strings.TrimPrefix(auth, "Bearer ")
 	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -23,11 +23,11 @@ func PostShort(c *gin.Context) {
 	var req model.ShortPost
 
 	if err := c.ShouldBindJSON(&req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	if err := service.CreateShort(uid, req); err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"message": err.Error()})
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
 	}
 	c.JSON(http.StatusOK, req)

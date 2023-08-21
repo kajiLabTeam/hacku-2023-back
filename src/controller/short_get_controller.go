@@ -16,7 +16,7 @@ func GetShort(c *gin.Context) {
 	tId := strings.TrimPrefix(auth, "Bearer ")
 	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
 		return
 	}
 
@@ -27,7 +27,7 @@ func GetShort(c *gin.Context) {
 		sIdInt, err := strconv.Atoi(sId)
 		if err != nil {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "Invalid shortId",
+				"error": "Invalid shortId",
 			})
 			return
 		}
@@ -92,7 +92,7 @@ func GetShort(c *gin.Context) {
 			model.InsertBrowsingHistory(model.BrowsingHistory{UserID: uid, ShortID: sIdInt, ReadAt: time.Now()})
 		} else {
 			c.JSON(http.StatusBadRequest, gin.H{
-				"message": "Unknown short id",
+				"error": "Unknown short id",
 			})
 			return
 		}
