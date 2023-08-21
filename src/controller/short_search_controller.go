@@ -10,8 +10,8 @@ import (
 )
 
 func SearchShort(c *gin.Context) {
-	h := c.Request.Header.Get("Authorization")
-	tId := strings.TrimPrefix(h, "Bearer ")
+	auth := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(auth, "Bearer ")
 	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
