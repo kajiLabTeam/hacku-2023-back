@@ -7,14 +7,13 @@ import (
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
-func CreateShort(a string, req model.ShortPost) error {
+func CreateShort(uid string, req model.ShortPost) error {
 	var short model.Short
 	var slides []model.Slide
 	var style int
-	t, _ := integrations.GetUserByID(a)
 	s := req.Slides
 
-	switch req.speaker {
+	switch req.Speaker {
 	case "四国めたん":
 		style = 2
 	case "ずんだもん":
@@ -72,7 +71,7 @@ func CreateShort(a string, req model.ShortPost) error {
 	for i, v := range s {
 		var slide model.Slide
 		b, _ := getBinary(v.Script, style)
-		fn, _ := makeMp3File(b, t.UID)
+		fn, _ := makeMp3File(b, uid)
 		rp, _ := integrations.Storage(fn)
 		slide.SlideText = v.Slide
 		slide.Voice = rp
@@ -82,7 +81,7 @@ func CreateShort(a string, req model.ShortPost) error {
 		os.Remove(fn)
 	}
 
-	short.UserID = t.UID
+	short.UserID = uid
 	short.Slides = slides
 	short.Speaker = req.Speaker
 	model.InsertShort(short)

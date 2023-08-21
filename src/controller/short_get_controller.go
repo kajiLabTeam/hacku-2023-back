@@ -12,51 +12,24 @@ import (
 )
 
 func GetShort(c *gin.Context) {
-	authHeader := c.Request.Header.Get("Authorization")
-	header := strings.TrimPrefix(authHeader, "Bearer ")
-	token, err := integrations.GetUserByID(header)
+	h := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(h, "Bearer ")
+	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
-		print(err)
-	}
-	u_id := token.UID
-	type Slide struct {
-		Script   string `json:"script"`
-		Content  string `json:"slide"`
-		VoiceURL string `json:"voiceURL"`
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
 
-	type Reaction struct {
-		Count   int  `json:"count"`
-		Reacted bool `json:"reacted"`
-	}
-	type Reactions struct {
-		Heart Reaction `json:"heart"`
-		Good  Reaction `json:"good"`
-		Smile Reaction `json:"smile"`
-	}
+	uid := t.UID
 
-	type Presentation struct {
-		ID        int       `json:"id"`
-		Title     string    `json:"title"`
-		Speaker   string    `json:"speaker"`
-		Slides    []Slide   `json:"slides"`
-		Tags      []string  `json:"tags"`
-		Genre     string    `json:"genre"`
-		Views     int       `json:"views"`
-		Poster    string    `json:"poster"`
-		CreatedAt string    `json:"createdAt"`
-		Reactions Reactions `json:"reactions"`
-	}
-	s_id_str := c.Param("shortId")
-	if s_id_str != "" {
-		s_id, err := strconv.Atoi(s_id_str)
+	sId := c.Param("shortId")
+	if sId != "" {
+		sIdInt, err := strconv.Atoi(sId)
 		if err != nil {
-			c.JSON(400, gin.H{
-				"error": "Invalid shortId",
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Invalid shortId",
 			})
-			return
 		}
-		s := model.GetShortByID(s_id)
+		s := model.GetShortByID(sIdInt)
 		if s != nil && s.GenreID != 0 {
 			sl := []Slide{}
 			for i := 0; i < len(model.GetSlideByShortID(s.ID)); i++ {
@@ -71,6 +44,7 @@ func GetShort(c *gin.Context) {
 			for i := 0; i < len(model.GetTagByShortID(s.ID)); i++ {
 				t = append(t, model.GetKeywordByID(model.GetTagByShortID(s.ID)[i].KeywordID).KeywordName)
 			}
+
 			r := []Reaction{}
 			rl := model.GetReactionList()
 			for i := 0; i < len(rl); i++ {
@@ -78,7 +52,7 @@ func GetShort(c *gin.Context) {
 				count := 0
 				reac := false
 				for j := 0; j < len(u_r); j++ {
-					if u_r[j].UserID == u_id {
+					if u_r[j].UserID == uid {
 						count++
 					}
 				}
@@ -100,7 +74,7 @@ func GetShort(c *gin.Context) {
 			dateFormat := "2006-01-02"
 			fDate := s.CreatedAt.Format(dateFormat)
 			result := Presentation{
-				ID:        s_id,
+				ID:        sIdInt,
 				Title:     s.Title,
 				Speaker:   s.Speaker,
 				Slides:    sl,
@@ -113,14 +87,14 @@ func GetShort(c *gin.Context) {
 			}
 			//出力
 			c.JSON(http.StatusOK, gin.H{"shorts": result})
-			model.InsertBrowsingHistory(model.BrowsingHistory{UserID: u_id, ShortID: s_id, ReadAt: time.Now()})
+			model.InsertBrowsingHistory(model.BrowsingHistory{UserID: uid, ShortID: sIdInt, ReadAt: time.Now()})
 		} else {
-			c.JSON(http.StatusOK, gin.H{
-				"message": "Unknown ShortID",
+			c.JSON(http.StatusBadRequest, gin.H{
+				"message": "Unknown short id",
 			})
 		}
 	} else {
-		s := model.GetRundumShort()
+		s := model.GetRandomShort()
 		//作った構造体にデータを入れる
 		result := []Presentation{}
 		for i := 0; i < len(s); i++ {
@@ -133,10 +107,12 @@ func GetShort(c *gin.Context) {
 				}
 				sl = append(sl, tmp)
 			}
+
 			t := []string{}
 			for j := 0; j < len(model.GetTagByShortID(s[i].ID)); j++ {
 				t = append(t, model.GetKeywordByID(model.GetTagByShortID(s[i].ID)[j].KeywordID).KeywordName)
 			}
+
 			r := []Reaction{}
 			rl := model.GetReactionList()
 			for j := 0; j < len(rl); j++ {
@@ -144,7 +120,7 @@ func GetShort(c *gin.Context) {
 				count := 0
 				reac := false
 				for l := 0; l < len(u_r); l++ {
-					if u_r[l].UserID == u_id {
+					if u_r[l].UserID == uid {
 						count++
 					}
 				}

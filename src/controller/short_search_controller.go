@@ -10,13 +10,14 @@ import (
 )
 
 func SearchShort(c *gin.Context) {
-	authHeader := c.Request.Header.Get("Authorization")
-	header := strings.TrimPrefix(authHeader, "Bearer ")
-	token, err := integrations.GetUserByID(header)
+	h := c.Request.Header.Get("Authorization")
+	tId := strings.TrimPrefix(h, "Bearer ")
+	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
-		print(err)
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
-	u_id := token.UID
+
+	uid := t.UID
 	tags := c.DefaultQuery("tags", "")
 	title := c.DefaultQuery("title", "")
 	var s []model.Short
@@ -48,11 +49,11 @@ func SearchShort(c *gin.Context) {
 		tag := model.GetTagByKeywordID(u_k)
 
 		//TagIDからShortを抽出
-		var s_id []int
+		var sId []int
 		for i := 0; i < len(tag); i++ {
-			s_id = append(s_id, tag[i].ShortID)
+			sId = append(sId, tag[i].ShortID)
 		}
-		s = model.GetShortByIDArray(s_id)
+		s = model.GetShortByIDArray(sId)
 
 	} else if tags == "" && title != "" {
 		//Tagsの入力なしでTitleに入力ある時
@@ -70,46 +71,15 @@ func SearchShort(c *gin.Context) {
 		s = tmp
 	}
 
-	//json用に抽出したShortをもとに構造体を作成
-
-	type Slide struct {
-		Script  string `json:"script"`
-		Content string `json:"slide"`
-		Voice   string `json:"voiceURL"`
-	}
-
-	type Reaction struct {
-		Count   int  `json:"count"`
-		Reacted bool `json:"reacted"`
-	}
-	type Reactions struct {
-		Heart Reaction `json:"heart"`
-		Good  Reaction `json:"good"`
-		Smile Reaction `json:"smile"`
-	}
-
-	type ShortOutPut struct {
-		ID        int       `json:"id"`
-		Title     string    `json:"title"`
-		Speaker   string    `json:"speaker"`
-		Slides    []Slide   `json:"slides"`
-		Tags      []string  `json:"tags"`
-		Genre     string    `json:"genre"`
-		Views     int       `json:"views"`
-		Poster    string    `json:"poster"`
-		CreatedAt string    `json:"createdAt"`
-		Reactions Reactions `json:"reactions"`
-	}
-
 	//作った構造体にデータを入れる
 	result := []ShortOutPut{}
 	for i := 0; i < len(s); i++ {
 		sl := []Slide{}
 		for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
 			tmp := Slide{
-				Script:  model.GetSlideByShortID(s[i].ID)[j].Script,
-				Content: model.GetSlideByShortID(s[i].ID)[j].SlideText,
-				Voice:   model.GetSlideByShortID(s[i].ID)[j].Voice,
+				Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
+				Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
+				VoiceURL: model.GetSlideByShortID(s[i].ID)[j].Voice,
 			}
 			sl = append(sl, tmp)
 		}
@@ -124,7 +94,7 @@ func SearchShort(c *gin.Context) {
 			count := 0
 			reac := false
 			for l := 0; l < len(u_r); l++ {
-				if u_r[l].UserID == u_id {
+				if u_r[l].UserID == uid {
 					count++
 				}
 			}
@@ -158,7 +128,7 @@ func SearchShort(c *gin.Context) {
 		}
 		result = append(result, tmp)
 	}
+
 	//出力
 	c.JSON(http.StatusOK, gin.H{"shorts": result})
-
 }
