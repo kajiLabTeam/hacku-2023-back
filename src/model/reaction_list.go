@@ -30,6 +30,18 @@ func GetReactionListByID(id int) *ReactionList {
 	return &rl
 }
 
+func GetReactionIDByName(rn string) (*int, error) {
+	rl := ReactionList{}
+	result := db.Where("reaction_name = ?", rn).First(&rl)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, result.Error
+	}
+	return &rl.ID, nil
+}
+
 func InsertReactionList(rl ReactionList) {
 	db.Create(&rl)
 }

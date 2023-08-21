@@ -14,6 +14,10 @@ type Slide struct {
 	VoiceURL string `json:"voiceURL"`
 }
 
+type ReactionRequest struct {
+	Reaction string `json:"reaction"`
+}
+
 type Reaction struct {
 	Count   int  `json:"count"`
 	Reacted bool `json:"reacted"`

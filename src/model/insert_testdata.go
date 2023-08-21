@@ -5,7 +5,7 @@ import "time"
 func InsertTestData() {
 	user := []User{
 		{ID: "cuidubv6Isgws8qba8oGGA0jd1i2", UserName: "mizutani"},
-		{ID: "0000000000000000000000000002", UserName: "shika"},
+		{ID: "5uwKkIYk5GgfQH6TVFw1eyPqkPT2", UserName: "shika"},
 		{ID: "0000000000000000000000000003", UserName: "hoge"},
 	}
 	keyword := []Keyword{
