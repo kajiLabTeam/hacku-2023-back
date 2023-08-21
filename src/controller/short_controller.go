@@ -16,6 +16,7 @@ func PostShort(c *gin.Context) {
 	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		return
 	}
 
 	uid := t.UID

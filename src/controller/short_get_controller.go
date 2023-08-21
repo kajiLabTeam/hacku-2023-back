@@ -17,6 +17,7 @@ func GetShort(c *gin.Context) {
 	t, err := integrations.VerifyIDToken(tId)
 	if err != nil {
 		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
+		return
 	}
 
 	uid := t.UID
@@ -28,6 +29,7 @@ func GetShort(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "Invalid shortId",
 			})
+			return
 		}
 		s := model.GetShortByID(sIdInt)
 		if s != nil && s.GenreID != 0 {
@@ -92,6 +94,7 @@ func GetShort(c *gin.Context) {
 			c.JSON(http.StatusBadRequest, gin.H{
 				"message": "Unknown short id",
 			})
+			return
 		}
 	} else {
 		s := model.GetRandomShort()
