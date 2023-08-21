@@ -2,6 +2,7 @@ package controller
 
 import (
 	"net/http"
+	"strconv"
 	"strings"
 	"time"
 
@@ -10,42 +11,17 @@ import (
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
-type Short struct {
-	ID     int    `json:"id"`
-	Title  string `json:"title"`
-	Slide  string `json:"slide"`
-	Views  int    `json:"views"`
-	Poster string `json:"poster"`
-}
-
 func GetProfile(c *gin.Context) {
 	authHeader := c.Request.Header.Get("Authorization")
 	header := strings.TrimPrefix(authHeader, "Bearer ")
-	token, err := integrations.GetUserByID(header)
+
+	token, err := integrations.VerifyIDToken(header)
 	if err != nil {
-		print(err)
-	}
-	u_id := token.UID
-
-	type Achievement struct {
-		Name string `json:"name"`
-		Link string `json:"link"`
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
 
-	type Genre struct {
-		Name       string `json:"name"`
-		Color      string `json:"color"`
-		DailyViews []int  `json:"dailyViews"`
-	}
+	uid := token.UID
 
-	type Report struct {
-		Dates  []string `json:"dates"`
-		Genres []Genre  `json:"genres"`
-	}
-	type Data struct {
-		Achievements []Achievement `json:"achievements"`
-		Report       Report        `json:"report"`
-	}
 	var a = []Achievement{}
 	colors := []string{
 		"245, 101, 101, 1",
@@ -56,10 +32,10 @@ func GetProfile(c *gin.Context) {
 		"160, 174, 192, 1",
 	}
 	var g = []Genre{}
-	for i := 0; i < len(model.GetAchievementByUserID(u_id)); i++ {
+	for i := 0; i < len(model.GetAchievementByUserID(uid)); i++ {
 		tmp := Achievement{
-			Name: model.GetKeywordByID(model.GetAchievementByUserID(u_id)[i].KeywordID).KeywordName,
-			Link: model.GetKeywordByID(model.GetAchievementByUserID(u_id)[i].KeywordID).ImageURL,
+			Name: model.GetKeywordByID(model.GetAchievementByUserID(uid)[i].KeywordID).KeywordName,
+			Link: model.GetKeywordByID(model.GetAchievementByUserID(uid)[i].KeywordID).ImageURL,
 		}
 		a = append(a, tmp)
 	}
@@ -75,7 +51,7 @@ func GetProfile(c *gin.Context) {
 	for i := 0; i < len(all_g); i++ {
 		var d_v []int
 		for j := 0; j < len(dates); j++ {
-			tmp := model.GetBrowsingHistoryByUserIDAndDay(u_id, dates[j])
+			tmp := model.GetBrowsingHistoryByUserIDAndDay(uid, dates[j])
 			count := 0
 			for _, bh := range tmp {
 				if model.GetShortByID(bh.ShortID).GenreID == all_g[i].ID {
@@ -102,14 +78,16 @@ func GetBrowsingHistory(c *gin.Context) {
 	page := c.DefaultQuery("page", "")
 	authHeader := c.Request.Header.Get("Authorization")
 	header := strings.TrimPrefix(authHeader, "Bearer ")
-	token, err := integrations.GetUserByID(header)
+
+	token, err := integrations.VerifyIDToken(header)
 	if err != nil {
-		print(err)
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
-	u_id := token.UID
+
+	uid := token.UID
 
 	var result []Short
-	bh := model.Get100BrowsingHistoryByUserID(u_id, page)
+	bh := model.Get100BrowsingHistoryByUserID(uid, page)
 	for i := 0; i < len(bh); i++ {
 		tmp := Short{
 			ID:     bh[i].ShortID,
@@ -132,13 +110,22 @@ func GetPostingHistory(c *gin.Context) {
 	page := c.DefaultQuery("page", "")
 	authHeader := c.Request.Header.Get("Authorization")
 	header := strings.TrimPrefix(authHeader, "Bearer ")
-	token, err := integrations.GetUserByID(header)
+
+	token, err := integrations.VerifyIDToken(header)
 	if err != nil {
-		print(err)
+		c.JSON(http.StatusUnauthorized, gin.H{"message": err.Error()})
 	}
-	u_id := token.UID
+
+	uid := token.UID
 	var result []Short
-	ph := model.Get100ShortByUserID(u_id, page)
+	offset, err := strconv.Atoi(page)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{
+			"message": err.Error(),
+		})
+
+	}
+	ph := model.Get100ShortByUserID(uid, offset)
 	for i := 0; i < len(ph); i++ {
 		tmp := Short{
 			ID:     ph[i].ID,
@@ -154,5 +141,4 @@ func GetPostingHistory(c *gin.Context) {
 	}
 	//出力
 	c.JSON(http.StatusOK, gin.H{"postingHistories": result})
-
 }

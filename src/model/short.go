@@ -2,8 +2,6 @@ package model
 
 import (
 	"errors"
-	"fmt"
-	"strconv"
 	"time"
 
 	"gorm.io/gorm"
@@ -48,12 +46,8 @@ func GetShortByTitle(title string) []Short {
 	return s
 }
 
-func Get100ShortByUserID(id string, page string) []Short {
+func Get100ShortByUserID(id string, offset int) []Short {
 	s := []Short{}
-	offset, err := strconv.Atoi(page)
-	if err != nil {
-		fmt.Println("Error:", err)
-	}
 
 	offset = (offset - 1) * 100
 	result := db.Where("user_id =?", id).Limit(100).Offset(offset).Find(&s)
@@ -63,7 +57,7 @@ func Get100ShortByUserID(id string, page string) []Short {
 	return s
 }
 
-func GetRundumShort() []Short {
+func GetRandomShort() []Short {
 	s := []Short{}
 	result := db.Order("RAND()").Limit(10).Find(&s)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
