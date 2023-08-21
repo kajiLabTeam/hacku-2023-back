@@ -1,6 +1,5 @@
 package integrations
 
-/*
 import (
 	"context"
 	"fmt"
@@ -69,4 +68,3 @@ func GetFileUrl(rp string) (string, error) {
 	return u, nil
 
 }
-*/
