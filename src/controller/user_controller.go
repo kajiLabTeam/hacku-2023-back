@@ -151,6 +151,10 @@ func PostUser(c *gin.Context) {
 	}
 
 	uid := t.UID
+	u := model.GetUserByID(uid)
+	if u != nil {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "User already exists"})
+	}
 
 	model.InsertUser(model.User{ID: uid, UserName: ""})
 
