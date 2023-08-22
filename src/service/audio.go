@@ -18,7 +18,7 @@ func getBinary(s string, style int) ([]byte, error) { //バイナリデータを
 	slice := []rune(str) //ルーンに変換しないと二バイト文字がバグる
 	str = string(slice)
 
-	urlParts := []string{"http://localhost:50021/audio_query?text=", url.QueryEscape(str), "&speaker=3&preset_id=",string(style)}
+	urlParts := []string{fmt.Sprint("http://localhost:50021/audio_query?text=", url.QueryEscape(str), "&speaker=3&preset_id=",style)}
 	url_query := strings.Join(urlParts, "")           //URL組み立て
 	req, _ := http.NewRequest("POST", url_query, nil) //POSTでリクエスト
 	req.Header.Set("accept", "application/json")      //ヘッダをセット
@@ -29,7 +29,7 @@ func getBinary(s string, style int) ([]byte, error) { //バイナリデータを
 		return nil, err
 	}
 
-	url_synth := "http://localhost:50021/synthesis?speaker="+string(style)+"&enable_interrogative_upspeak=true" //音声生成用URL
+	url_synth := fmt.Sprint("http://localhost:50021/synthesis?speaker=",style,"&enable_interrogative_upspeak=true") //音声生成用URL
 	req_s, _ := http.NewRequest("POST", url_synth, resp.Body)                                   //POSTでリクエスト
 	req_s.Header.Set("accept", "audio/mp3")                                                     //ヘッダをセット
 	req_s.Header.Set("Content-Type", "application/json")                                        //ヘッダをセット
