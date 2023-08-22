@@ -21,5 +21,5 @@ func Init() {
 
 	r.DELETE("/api/short/:shortId/reaction/remove/", controller.DeleteReaction)
 
-	r.Run(":8000")
+	r.Run(":8084")
 }

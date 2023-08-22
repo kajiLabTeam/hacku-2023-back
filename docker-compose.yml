@@ -1,4 +1,4 @@
-version: '3'
+version: "3"
 services:
   go:
     container_name: HackU2023_Nagoya_GO
@@ -7,8 +7,6 @@ services:
       dockerfile: Dockerfile
     stdin_open: true
     tty: true
-    # env_file:
-    #   - ./build/go/.env
     volumes:
       - ./src:/src/app
     ports:
@@ -20,27 +18,15 @@ services:
     depends_on:
       - "mysql"
 
-  # python:
-  #   container_name: HackU2023_Nagoya_Py
-  #   build:
-  #     context: .build/python
-  #     dockerfile: Dockerfile
-  #   stdin_open: true
-  #   tty: true
-  #   volumes:
-  #     - ./src_py:/src/app
-  #   ports:
-  #     - 8081:8081
-  #   depends_on:
-  #     - "mysql"
-
   mysql:
     container_name: HackU2023_Nagoya_DB
     image: mysql:latest
     volumes:
       - ./build/mysql/mysqld_charset.cnf:/etc/mysql/conf.d/my.cnf
     ports:
-      - "3306:3306"
+      - "3309:3309"
+    expose:
+      - 3309
     deploy:
       resources:
         limits:
@@ -48,12 +34,13 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: admin
       MYSQL_DATABASE: hacku_nagoya
+      MYSQL_TCP_PORT: 3309
 
   voicevox_engine:
     image: voicevox/voicevox_engine:cpu-ubuntu20.04-latest
     container_name: HackU2023_Nagoya_Voicevox
     volumes:
       - ./build/voicevox/presets.yaml:/opt/voicevox_engine/presets.yaml
-    ports: 
-      - '50021:50021'
+    ports:
+      - "50021:50021"
     tty: true
