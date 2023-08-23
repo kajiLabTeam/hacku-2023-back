@@ -11,9 +11,14 @@ type Slide struct {
 	ShortID   int    `json:"shortId"`
 	SlideText string `json:"slideText"`
 	//SlideURL   string `json:"slideUrl"`
-	VoiceURL   string `json:"voiceUrl"`
+	Voice      string `json:"voiceUrl"`
 	Script     string `json:"script"`
 	PageNumber int    `json:"pageNumber"`
+}
+
+type SlidePost struct {
+	Script string `json:"script"`
+	Slide  string `json:"slide"`
 }
 
 func GetSlideByID(id int) *Slide {
@@ -23,6 +28,15 @@ func GetSlideByID(id int) *Slide {
 		return nil
 	}
 	return &s
+}
+
+func GetSlideByShortID(id int) []Slide {
+	s := []Slide{}
+	result := db.Where("short_id = ?", id).Order("page_number").Find(&s)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return s
 }
 
 func GetThumbnailByShortID(id int) *Slide {

@@ -1,5 +1,0 @@
-mysql:
-  user: root
-  password: admin
-  protocol: tcp(localhost:3306)
-  dbname: hacku_nagoya

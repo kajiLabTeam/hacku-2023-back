@@ -21,6 +21,15 @@ func GetTagByID(id int) *Tag {
 	return &t
 }
 
+func GetTagByShortID(id int) []Tag {
+	t := []Tag{}
+	result := db.Where("short_id = ?", id).Find(&t).Distinct("keyword_id")
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return t
+}
+
 func GetTagByKeywordID(k_id []int) []Tag {
 	t := []Tag{}
 	subQuery := db.Table("tags").Select("short_id").Where("keyword_id IN (?)", k_id).

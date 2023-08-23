@@ -17,7 +17,7 @@ type User struct {
 
 func GetUserByID(id string) *User {
 	u := User{}
-	result := db.First(&u, id)
+	result := db.First(&u, "id = ?", id)
 	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
 		return nil
 	}

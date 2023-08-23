@@ -12,6 +12,15 @@ type ReactionList struct {
 	Reactions    []Reaction `gorm:"foreignkey:ReactionListID"`
 }
 
+func GetReactionList() []ReactionList {
+	rl := []ReactionList{}
+	result := db.Find(&rl)
+	if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+		return nil
+	}
+	return rl
+}
+
 func GetReactionListByID(id int) *ReactionList {
 	rl := ReactionList{}
 	result := db.First(&rl, id)
@@ -19,6 +28,18 @@ func GetReactionListByID(id int) *ReactionList {
 		return nil
 	}
 	return &rl
+}
+
+func GetReactionIDByName(rn string) (*int, error) {
+	rl := ReactionList{}
+	result := db.Where("reaction_name = ?", rn).First(&rl)
+	if result.Error != nil {
+		if errors.Is(result.Error, gorm.ErrRecordNotFound) {
+			return nil, nil
+		}
+		return nil, result.Error
+	}
+	return &rl.ID, nil
 }
 
 func InsertReactionList(rl ReactionList) {
