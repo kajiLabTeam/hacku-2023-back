@@ -1,6 +1,7 @@
 package service
 
 import (
+	"log"
 	"os"
 
 	"github.com/kajiLabTeam/hacku-2023-back/integrations"
@@ -10,8 +11,23 @@ import (
 func CreateShort(uid string, req model.ShortPost) error {
 	var short model.Short
 	var slides []model.Slide
-	var style int
+	var style, gid int
 	s := req.Slides
+
+	switch req.Genre {
+	case "web":
+		gid = 1
+	case "バックエンド":
+		gid = 2
+	case "モバイル":
+		gid = 3
+	case "インフラ":
+		gid = 4
+	case "ゲーム":
+		gid = 5
+	case "その他":
+		gid = 6
+	}
 
 	switch req.Speaker {
 	case "四国めたん":
@@ -82,9 +98,13 @@ func CreateShort(uid string, req model.ShortPost) error {
 	}
 
 	short.UserID = uid
+	short.Title = req.Title
+	short.GenreID = gid
 	short.Slides = slides
 	short.Speaker = req.Speaker
-	model.InsertShort(short)
+	if err := model.InsertShort(short); err != nil {
+		log.Fatal(err)
+	}
 
 	return nil
 }
