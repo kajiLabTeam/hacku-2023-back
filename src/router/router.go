@@ -3,7 +3,9 @@ package router
 import (
 	"io"
 	"os"
+	"time"
 
+	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/kajiLabTeam/hacku-2023-back/controller"
 )
@@ -14,6 +16,25 @@ func Init() {
 	gin.DefaultWriter = io.MultiWriter(f)
 
 	r := gin.Default()
+
+	r.Use(cors.New(cors.Config{
+		AllowMethods: []string{
+			"GET",
+			"POST",
+			"DELETE",
+			"OPTIONS",
+		},
+		AllowHeaders: []string{
+			"Access-Control-Allow-Credentials",
+			"Access-Control-Allow-Headers",
+			"Content-Type",
+			"Content-Length",
+			"Accept-Encoding",
+			"Authorization",
+		},
+		AllowAllOrigins: true,
+		MaxAge:          24 * time.Hour,
+	}))
 
 	r.GET("/api/short/search", controller.SearchShort)
 	r.GET("/api/short/get", controller.GetShort)
