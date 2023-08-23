@@ -1,12 +1,18 @@
 package router
 
 import (
+	"io"
+	"os"
+
 	"github.com/gin-gonic/gin"
 	"github.com/kajiLabTeam/hacku-2023-back/controller"
 )
 
 func Init() {
 	r := gin.Default()
+	gin.DisableConsoleColor()
+	f, _ := os.Create("../server.log")
+	gin.DefaultWriter = io.MultiWriter(f)
 
 	r.GET("/api/short/search", controller.SearchShort)
 	r.GET("/api/short/get", controller.GetShort)
