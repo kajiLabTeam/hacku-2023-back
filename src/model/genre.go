@@ -9,7 +9,7 @@ import (
 type Genre struct {
 	ID        int    `gorm:"primaryKey;autoIncrement" json:"id"`
 	GenreName string `json:"genreName"`
-	Short     Short  `gorm:"foreignkey:GenreID"`
+	Short     []Short  `gorm:"foreignkey:GenreID"`
 }
 
 func GetAllGenre() []Genre {
