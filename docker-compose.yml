@@ -1,23 +1,5 @@
 version: "3"
 services:
-  go:
-    container_name: HackU2023_Nagoya_GO
-    build:
-      context: ./build/go
-      dockerfile: Dockerfile
-    stdin_open: true
-    tty: true
-    volumes:
-      - ./src:/src/app
-    ports:
-      - 8080:8080
-    deploy:
-      resources:
-        limits:
-          memory: 2g
-    depends_on:
-      - "mysql"
-
   mysql:
     container_name: HackU2023_Nagoya_DB
     image: mysql:latest
