@@ -16,7 +16,8 @@ func CreateAllTable() {
 	db.AutoMigrate(&Tag{})
 	db.AutoMigrate(&Reaction{})
 	db.AutoMigrate(&BrowsingHistory{})
-
+	db.AutoMigrate(&Achievement{})
+	
 	gname := []string{
 		"web",
 		"バックエンド",
