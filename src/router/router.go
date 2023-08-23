@@ -9,10 +9,11 @@ import (
 )
 
 func Init() {
-	r := gin.Default()
 	gin.DisableConsoleColor()
 	f, _ := os.Create("../server.log")
 	gin.DefaultWriter = io.MultiWriter(f)
+
+	r := gin.Default()
 
 	r.GET("/api/short/search", controller.SearchShort)
 	r.GET("/api/short/get", controller.GetShort)
