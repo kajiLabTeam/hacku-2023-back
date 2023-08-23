@@ -19,14 +19,14 @@ func Init() {
 	r.GET("/api/short/get", controller.GetShort)
 	r.GET("/api/short/get/:shortId", controller.GetShort)
 	r.GET("/api/user/profile", controller.GetProfile)
-	r.GET("/api/user/post/history/get/", controller.GetPostingHistory)
-	r.GET("/api/user/browsing/history/", controller.GetBrowsingHistory)
+	r.GET("/api/user/post/history/get", controller.GetPostingHistory)
+	r.GET("/api/user/browsing/history", controller.GetBrowsingHistory)
 
 	r.POST("/api/user/post", controller.PostUser)
 	r.POST("/api/short/post", controller.PostShort)
-	r.POST("/api/short/:shortId/reaction/add/", controller.PostReaction)
+	r.POST("/api/short/:shortId/reaction/add", controller.PostReaction)
 
-	r.DELETE("/api/short/:shortId/reaction/remove/", controller.DeleteReaction)
+	r.DELETE("/api/short/:shortId/reaction/remove", controller.DeleteReaction)
 
 	r.Run(":8084")
 }
