@@ -20,8 +20,9 @@ type Short struct {
 }
 
 type ShortPost struct {
-	Title   string  `json:"title"`
-	Speaker string  `json:"speaker"`
+	Title   string      `json:"title"`
+	Genre   string      `json:"genre"`
+	Speaker string      `json:"speaker"`
 	Slides  []SlidePost `json:"slides"`
 }
 
@@ -79,8 +80,11 @@ func GetAllShort() []Short {
 	}
 	return s
 }
-func InsertShort(s Short) {
-	db.Create(&s)
+func InsertShort(s Short) error {
+	if err:=db.Create(&s).Error; err != nil {
+		return err
+	}
+	return nil
 }
 
 func DeleatShoat(id int) {

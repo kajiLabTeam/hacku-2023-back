@@ -17,4 +17,19 @@ func CreateAllTable() {
 	db.AutoMigrate(&Reaction{})
 	db.AutoMigrate(&BrowsingHistory{})
 	db.AutoMigrate(&Achievement{})
+	
+	gname := []string{
+		"web",
+		"バックエンド",
+		"モバイル",
+		"インフラ",
+		"ゲーム",
+		"その他",
+	}
+	for _, v := range gname {
+		var genre Genre
+		genre.GenreName = v
+		InsertGenre(genre)
+	}
+
 }
