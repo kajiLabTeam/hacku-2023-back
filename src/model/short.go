@@ -22,7 +22,7 @@ type Short struct {
 type ShortPost struct {
 	Title   string  `json:"title"`
 	Speaker string  `json:"speaker"`
-	Slides  []SlidePost `json:"Slide"`
+	Slides  []SlidePost `json:"slides"`
 }
 
 func GetShortByID(id int) *Short {
