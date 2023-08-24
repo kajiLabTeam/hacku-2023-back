@@ -18,7 +18,7 @@ func getBinary(s string, style int) ([]byte, error) { //バイナリデータを
 	slice := []rune(str) //ルーンに変換しないと二バイト文字がバグる
 	str = string(slice)
 
-	urlParts := []string{fmt.Sprint("http://localhost:50021/audio_query?text=", url.QueryEscape(str), "&speaker=3&preset_id=",style)}
+	urlParts := []string{fmt.Sprint("http://localhost:50021/audio_query?text=", url.QueryEscape(str), "&speaker=3&preset_id=", style)}
 	url_query := strings.Join(urlParts, "")           //URL組み立て
 	req, _ := http.NewRequest("POST", url_query, nil) //POSTでリクエスト
 	req.Header.Set("accept", "application/json")      //ヘッダをセット
@@ -29,11 +29,11 @@ func getBinary(s string, style int) ([]byte, error) { //バイナリデータを
 		return nil, err
 	}
 
-	url_synth := fmt.Sprint("http://localhost:50021/synthesis?speaker=",style,"&enable_interrogative_upspeak=true") //音声生成用URL
-	req_s, _ := http.NewRequest("POST", url_synth, resp.Body)                                   //POSTでリクエスト
-	req_s.Header.Set("accept", "audio/mp3")                                                     //ヘッダをセット
-	req_s.Header.Set("Content-Type", "application/json")                                        //ヘッダをセット
-	resp_s, err := client.Do(req_s)                                                             //リクエスト
+	url_synth := fmt.Sprint("http://localhost:50021/synthesis?speaker=", style, "&enable_interrogative_upspeak=true") //音声生成用URL
+	req_s, _ := http.NewRequest("POST", url_synth, resp.Body)                                                         //POSTでリクエスト
+	req_s.Header.Set("accept", "audio/mp3")                                                                           //ヘッダをセット
+	req_s.Header.Set("Content-Type", "application/json")                                                              //ヘッダをセット
+	resp_s, err := client.Do(req_s)                                                                                   //リクエスト
 	if err != nil {
 		log.Printf("error: %v", err)
 		return nil, err
@@ -63,4 +63,30 @@ func makeMp3File(b []byte, user string) (string, error) { //音声を生成す�
 	}()
 	file.Write(b)         //ファイルにデータを書き込む
 	return file_name, nil //ファイルのパスを返す
+}
+
+type Dictionary struct {
+	Surface       string `json:"surface"`
+	Pronunciation string `json:"pronunciation"`
+	AccentType    int    `json:"accent_type"`
+}
+
+func SetDictionary(r Dictionary) error {
+	surface := r.Surface
+	pronunciation := r.Pronunciation
+	accent_type := r.AccentType
+	slices := []rune(pronunciation)
+	pronunciation = string(slices)
+	urlParts := []string{fmt.Sprint("http://localhost:50021/user_dict_word?surface=",surface,"&pronunciation=",url.QueryEscape(pronunciation),"&accent_type=", accent_type,"&word_type=PROPER_NOUN&priority=6")}
+	url_query := strings.Join(urlParts, "")           //URL組み立て
+	req, _ := http.NewRequest("POST", url_query, nil) //POSTでリクエスト
+	req.Header.Set("accept", "application/json")      //ヘッダをセット
+	client := new(http.Client)                        //クライアント生成
+	resp, err := client.Do(req)                       //リクエスト
+	if err != nil {
+		log.Printf("error: %v", err)
+		return err
+	}
+	defer resp.Body.Close()
+	return nil
 }

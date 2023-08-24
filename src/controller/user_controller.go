@@ -157,7 +157,10 @@ func PostUser(c *gin.Context) {
 		return
 	}
 
-	model.InsertUser(model.User{ID: uid, UserName: ""})
+	nameInterfase := t.Claims["name"]
+	uname:=nameInterfase.(string)
 
-	c.JSON(http.StatusOK, gin.H{"id": uid, "name": ""})
+	model.InsertUser(model.User{ID: uid, UserName: uname})
+
+	c.JSON(http.StatusOK, gin.H{"id": uid, "name": uname})
 }

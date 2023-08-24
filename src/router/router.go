@@ -30,5 +30,7 @@ func Init() {
 
 	r.DELETE("/api/short/:shortId/reaction/remove", controller.DeleteReaction)
 
+	r.POST("/api/dictionary/post", controller.PostDictionary)
+
 	r.Run(":8084")
 }

@@ -22,6 +22,8 @@ func PostShort(c *gin.Context) {
 	uid := t.UID
 	var req model.ShortPost
 
+	
+
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return
