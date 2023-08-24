@@ -117,5 +117,12 @@ func CreateShort(uid string, req model.ShortPost) error {
 		log.Fatal(err)
 	}
 
+	for _, v := range tags {
+		var achieve model.Achievement
+		achieve.KeywordID = v.KeywordID
+		achieve.UserID = uid
+		model.InsertAchievement(achieve)
+	}
+
 	return nil
 }
