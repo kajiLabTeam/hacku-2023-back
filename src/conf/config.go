@@ -16,7 +16,6 @@ func init() {
 	m.SetConfigType("yaml")
 	m.SetConfigName("mysql")
 	m.AddConfigPath("conf/environments/")
-
 }
 
 func GetFirebaseConfig() *viper.Viper {

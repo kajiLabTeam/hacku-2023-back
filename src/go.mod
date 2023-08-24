@@ -5,6 +5,7 @@ go 1.20
 require (
 	cloud.google.com/go/storage v1.28.1
 	firebase.google.com/go v3.13.0+incompatible
+	github.com/gin-contrib/cors v1.4.0
 	github.com/spf13/viper v1.16.0
 	google.golang.org/api v0.122.0
 	gorm.io/driver/mysql v1.5.1
