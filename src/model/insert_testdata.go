@@ -4,9 +4,12 @@ import "time"
 
 func InsertTestData() {
 	user := []User{
-		{ID: "cuidubv6Isgws8qba8oGGA0jd1i2", UserName: "mizutani"},
-		{ID: "5uwKkIYk5GgfQH6TVFw1eyPqkPT2", UserName: "shika"},
-		{ID: "0000000000000000000000000003", UserName: "hoge"},
+		{ID: "4c96HplPwNdlsNEjIpRpjSvMpY72", UserName: "mizutani"},
+		{ID: "NVSdw8o6PGNBWx4CXDbLL6x5wqF2", UserName: "shika"},
+		{ID: "cuidubv6Isgws8qba8oGGA0jd1i2", UserName: "nishi"},
+		{ID: "MciOobBZSqT4h5NqDapE4B6V83X2", UserName: "2424"},
+		{ID: "JVQG5Ecu8SUQZPP886cQBZhTL5q2", UserName: "bayashin"},
+		{ID: "riJLpcGNtfMvFtRurRdkEcbS4wn1", UserName: "ryouta"},
 		{ID: "Not logged user", UserName: "undefined"},
 	}
 	keyword := []Keyword{
@@ -79,7 +82,7 @@ func InsertTestData() {
 	for i := 0; i < len(user); i++ {
 		InsertUser(user[i])
 	}
-	for i := 0; i < len(keyword); i++ {// キーワードをデータベースに入れる
+	for i := 0; i < len(keyword); i++ { // キーワードをデータベースに入れる
 		InsertKeyword(keyword[i])
 	}
 	for i := 0; i < len(genre); i++ {
