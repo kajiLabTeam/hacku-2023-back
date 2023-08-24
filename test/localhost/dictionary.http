@@ -1,0 +1,9 @@
+POST http://localhost:8084/api/dictionary/post
+Content-Type: application/json
+Accept: application/json
+
+{
+    "surface": "Docker",
+    "pronunciation": "ドッカー",
+    "accent_type":0
+}
