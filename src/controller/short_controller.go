@@ -11,16 +11,21 @@ import (
 )
 
 func PostShort(c *gin.Context) {
-	auth := c.Request.Header.Get("Authorization")
-	tId := strings.TrimPrefix(auth, "Bearer ")
-	t, err := integrations.VerifyIDToken(tId)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-		return
-	}
-
-	uid := t.UID
+	var uid string
 	var req model.ShortPost
+
+	auth := c.Request.Header.Get("Authorization")
+	if auth != "" {
+		tId := strings.TrimPrefix(auth, "Bearer ")
+		t, err := integrations.VerifyIDToken(tId)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			return
+		}
+		uid = t.UID
+	} else {
+		uid = "Not logged user"
+	}
 
 	if err := c.ShouldBindJSON(&req); err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
