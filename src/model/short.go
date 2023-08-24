@@ -22,7 +22,7 @@ type Short struct {
 type ShortPost struct {
 	Title   string      `json:"title"`
 	Genre   string      `json:"genre"`
-	Tag     []string      `json:"tag"`
+	Tag     []string    `json:"tag"`
 	Speaker string      `json:"speaker"`
 	Slides  []SlidePost `json:"slides"`
 }
