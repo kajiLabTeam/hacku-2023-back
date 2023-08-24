@@ -10,15 +10,21 @@ import (
 )
 
 func SearchShort(c *gin.Context) {
+	var uid string
+
 	auth := c.Request.Header.Get("Authorization")
-	tId := strings.TrimPrefix(auth, "Bearer ")
-	t, err := integrations.VerifyIDToken(tId)
-	if err != nil {
-		c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
-		return
+	if auth != "" {
+		tId := strings.TrimPrefix(auth, "Bearer ")
+		t, err := integrations.VerifyIDToken(tId)
+		if err != nil {
+			c.JSON(http.StatusUnauthorized, gin.H{"error": err.Error()})
+			return
+		}
+		uid = t.UID
+	} else {
+		uid = "Not logged user"
 	}
 
-	uid := t.UID
 	tags := c.DefaultQuery("tags", "")
 	title := c.DefaultQuery("title", "")
 	var s []model.Short

@@ -7,6 +7,7 @@ func InsertTestData() {
 		{ID: "cuidubv6Isgws8qba8oGGA0jd1i2", UserName: "mizutani"},
 		{ID: "5uwKkIYk5GgfQH6TVFw1eyPqkPT2", UserName: "shika"},
 		{ID: "0000000000000000000000000003", UserName: "hoge"},
+		{ID: "Not logged user", UserName: "undefined"},
 	}
 	keyword := []Keyword{
 		{ID: 1, KeywordName: "Golang"},
