@@ -24,14 +24,14 @@ func GetProfile(c *gin.Context) {
 	uid := t.UID
 
 	var a = []Achievement{}
-	colors := []string{
-		"245, 101, 101, 1",
-		"66, 153, 225, 1",
-		"246, 173, 85, 1",
-		"72, 187, 120, 1",
-		"159, 122, 234, 1",
-		"160, 174, 192, 1",
-	}
+	// colors := []string{
+	// 	"245, 101, 101, 1",
+	// 	"66, 153, 225, 1",
+	// 	"246, 173, 85, 1",
+	// 	"72, 187, 120, 1",
+	// 	"159, 122, 234, 1",
+	// 	"160, 174, 192, 1",
+	// }
 	var g = []Genre{}
 	for _, v := range model.GetAchievementByUserID(uid) {
 		tmp := Achievement{
@@ -64,7 +64,7 @@ func GetProfile(c *gin.Context) {
 
 		tmp := Genre{
 			Name:       all_g[i].GenreName,
-			Color:      colors[i],
+			Color:      "許さんぞ水谷祐生",
 			DailyViews: d_v,
 		}
 		g = append(g, tmp)
