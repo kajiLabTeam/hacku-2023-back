@@ -13,7 +13,7 @@ func CreateShort(uid string, req model.ShortPost) error {
 	var slides []model.Slide
 	var tags []model.Tag
 	var style, gid int
-	t := req.Tag
+	t := req.Tags
 	s := req.Slides
 
 	switch req.Genre {

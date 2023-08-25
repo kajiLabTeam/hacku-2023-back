@@ -9,6 +9,5 @@ import (
 func main() {
 	model.CreateAllTable()
 	service.SetKeyword()
-	model.InsertTestData()
 	router.Init()
 }
