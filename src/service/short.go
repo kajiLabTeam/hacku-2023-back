@@ -119,9 +119,10 @@ func CreateShort(uid string, req model.ShortPost) error {
 
 	for _, v := range tags {
 		var achieve model.Achievement
-		key:=model.GetKeywordByName(v.TagName)
+		key := model.GetKeywordByName(v.TagName)
 		achieve.AchievementImage = key.ImageURL
-		model.InsertAchievement(achieve)
+		a := model.GetAchieveByNameUserId(v.TagName, uid)
+		model.UpdateAchievement(achieve, *a)
 	}
 
 	return nil

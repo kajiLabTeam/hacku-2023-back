@@ -52,6 +52,8 @@ func SearchShort(c *gin.Context) {
 			}
 		}
 
+		if u_k != nil{k_name = u_k}
+
 		//KeywordIDからTagを抽出
 		tag := model.GetTagByName(k_name)
 

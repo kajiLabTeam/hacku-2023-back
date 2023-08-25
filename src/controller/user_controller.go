@@ -161,13 +161,15 @@ func PostUser(c *gin.Context) {
 	nameInterfase := t.Claims["name"]
 	uname := nameInterfase.(string)
 
+	
+	model.InsertUser(model.User{ID: uid, UserName: uname})
 	keyword,_ := service.GetAllKeyword()
 	for _, v := range keyword {
 		achieve := model.Achievement{UserID: uid, AchievementName: v, AchievementImage: ""}
 		model.InsertAchievement(achieve)
 	}
 
-	model.InsertUser(model.User{ID: uid, UserName: uname})
+
 
 	c.JSON(http.StatusOK, gin.H{"id": uid, "name": uname})
 }

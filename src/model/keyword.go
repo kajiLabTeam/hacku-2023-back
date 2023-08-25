@@ -8,8 +8,8 @@ import (
 
 type Keyword struct {
 	ID          int    `gorm:"primaryKey;autoIncrement" json:"id"`
-	KeywordName string
-	ImageURL    string
+	KeywordName string `json:"keywordName"`
+	ImageURL    string `json:"imageUrl"`
 }
 
 func GetKeywordByID(id int) *Keyword {

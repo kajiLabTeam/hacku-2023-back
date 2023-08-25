@@ -8,7 +8,7 @@ import (
 
 type Tag struct {
 	ID        int `gorm:"primaryKey;autoIncrement" json:"id"`
-	TagName string `json:"keywordId"`
+	TagName string `json:"tagName"`
 	ShortID   int `json:"shortId"`
 }
 
@@ -43,7 +43,7 @@ func GetTagByName(k_name []string) []Tag {
 	var tags []Tag
 	for _, v := range k_name {
 		var tag Tag
-		db.Where("tagname = ?", v).First(&tag)
+		db.Where("tag_name = ?", v).First(&tag)
 		tags = append(tags, tag)
 	}
 	return tags
