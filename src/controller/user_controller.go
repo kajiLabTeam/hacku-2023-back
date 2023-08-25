@@ -9,6 +9,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/kajiLabTeam/hacku-2023-back/integrations"
 	"github.com/kajiLabTeam/hacku-2023-back/model"
+	"github.com/kajiLabTeam/hacku-2023-back/service"
 )
 
 func GetProfile(c *gin.Context) {
@@ -32,10 +33,10 @@ func GetProfile(c *gin.Context) {
 		"160, 174, 192, 1",
 	}
 	var g = []Genre{}
-	for i := 0; i < len(model.GetAchievementByUserID(uid)); i++ {
+	for _, v := range model.GetAchievementByUserID(uid) {
 		tmp := Achievement{
-			Name: model.GetKeywordByID(model.GetAchievementByUserID(uid)[i].KeywordID).KeywordName,
-			Link: model.GetKeywordByID(model.GetAchievementByUserID(uid)[i].KeywordID).ImageURL,
+			Name: v.AchievementName,
+			Link: v.AchievementImage,
 		}
 		a = append(a, tmp)
 	}
@@ -158,9 +159,17 @@ func PostUser(c *gin.Context) {
 	}
 
 	nameInterfase := t.Claims["name"]
-	uname:=nameInterfase.(string)
+	uname := nameInterfase.(string)
 
+	
 	model.InsertUser(model.User{ID: uid, UserName: uname})
+	keyword,_ := service.GetAllKeyword()
+	for _, v := range keyword {
+		achieve := model.Achievement{UserID: uid, AchievementName: v, AchievementImage: ""}
+		model.InsertAchievement(achieve)
+	}
+
+
 
 	c.JSON(http.StatusOK, gin.H{"id": uid, "name": uname})
 }

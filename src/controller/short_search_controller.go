@@ -33,27 +33,29 @@ func SearchShort(c *gin.Context) {
 		t := strings.Split(tags, ",")
 
 		//入力されたTagから存在するTagだけ抜き出し
-		var k_id []int
+		var k_name []string
 		for i := 0; i < len(t); i++ {
 			k := model.GetKeywordByName(t[i])
 			if k != nil {
-				k_id = append(k_id, k.ID)
+				k_name = append(k_name, k.KeywordName)
 			}
 		}
 
 		//ないと思うけどTagが重複したときは１つにする
-		m := make(map[int]bool)
-		u_k := []int{}
+		m := make(map[string]bool)
+		u_k := []string{}
 
-		for _, ele := range k_id {
+		for _, ele := range k_name {
 			if !m[ele] {
 				m[ele] = true
 				u_k = append(u_k, ele)
 			}
 		}
 
+		if u_k != nil{k_name = u_k}
+
 		//KeywordIDからTagを抽出
-		tag := model.GetTagByKeywordID(u_k)
+		tag := model.GetTagByName(k_name)
 
 		//TagIDからShortを抽出
 		var sId []int
@@ -92,7 +94,7 @@ func SearchShort(c *gin.Context) {
 		}
 		t := []string{}
 		for j := 0; j < len(model.GetTagByShortID(s[i].ID)); j++ {
-			t = append(t, model.GetKeywordByID(model.GetTagByShortID(s[i].ID)[j].KeywordID).KeywordName)
+			t = append(t, model.GetTagByShortID(s[i].ID)[j].TagName)
 		}
 		r := []Reaction{}
 		rl := model.GetReactionList()

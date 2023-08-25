@@ -49,7 +49,7 @@ func GetShort(c *gin.Context) {
 			}
 			t := []string{}
 			for i := 0; i < len(model.GetTagByShortID(s.ID)); i++ {
-				t = append(t, model.GetKeywordByID(model.GetTagByShortID(s.ID)[i].KeywordID).KeywordName)
+				t = append(t, model.GetTagByShortID(s.ID)[i].TagName)
 			}
 
 			r := []Reaction{}
@@ -118,7 +118,7 @@ func GetShort(c *gin.Context) {
 
 			t := []string{}
 			for j := 0; j < len(model.GetTagByShortID(s[i].ID)); j++ {
-				t = append(t, model.GetKeywordByID(model.GetTagByShortID(s[i].ID)[j].KeywordID).KeywordName)
+				t = append(t, model.GetTagByShortID(s[i].ID)[j].TagName)
 			}
 
 			r := []Reaction{}

@@ -102,7 +102,7 @@ func CreateShort(uid string, req model.ShortPost) error {
 	for _, v := range t {
 		var tag model.Tag
 		if k := model.GetKeywordByName(v); k != nil {
-			tag.KeywordID = k.ID
+			tag.TagName = k.KeywordName
 			tags = append(tags, tag)
 		}
 	}
@@ -119,9 +119,10 @@ func CreateShort(uid string, req model.ShortPost) error {
 
 	for _, v := range tags {
 		var achieve model.Achievement
-		achieve.KeywordID = v.KeywordID
-		achieve.UserID = uid
-		model.InsertAchievement(achieve)
+		key := model.GetKeywordByName(v.TagName)
+		achieve.AchievementImage = key.ImageURL
+		a := model.GetAchieveByNameUserId(v.TagName, uid)
+		model.UpdateAchievement(achieve, *a)
 	}
 
 	return nil
