@@ -8,7 +8,7 @@ import (
 	"github.com/kajiLabTeam/hacku-2023-back/model"
 )
 
-func SetKeyword() {
+func GetAllKeyword() ([]string, []string) {
 	file, err := os.Open("service/data.csv")
 	if err != nil {
 		log.Fatal(err)
@@ -19,14 +19,23 @@ func SetKeyword() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	var keyword, image []string
 	for i, v := range rows {
 		if i == 0 {
 			continue
 		}
+		keyword = append(keyword, v[0])
+		image = append(image, v[1])
+	}
+	return keyword, image
+}
+
+func SetKeyword() {
+	keyword, image := GetAllKeyword()
+	for i, v := range keyword {
 		var k model.Keyword
-		k.KeywordName = v[0]
-		k.ImageURL = "image/" + v[1]
+		k.KeywordName = v
+		k.ImageURL = "image/" + image[i]
 		model.InsertKeyword(k)
 	}
-
 }
