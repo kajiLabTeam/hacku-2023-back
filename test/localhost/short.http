@@ -29,7 +29,7 @@ Authorization: Bearer eyJhbGciOiJSUzI1NiIsImtpZCI6IjYzODBlZjEyZjk1ZjkxNmNhZDdhNG
   "title": "1分でわかるJS講座",
   "genre": "web",
   "speaker": "ずんだもん",
-  "tag": [
+  "tags": [
     "TypeScript",
   ],
   "slides": [
