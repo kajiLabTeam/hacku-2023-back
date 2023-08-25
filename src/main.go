@@ -9,5 +9,6 @@ import (
 func main() {
 	model.CreateAllTable()
 	service.SetKeyword()
+	service.SetReactionList()
 	router.Init()
 }
