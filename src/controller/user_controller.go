@@ -64,7 +64,7 @@ func GetProfile(c *gin.Context) {
 
 		tmp := Genre{
 			Name:       all_g[i].GenreName,
-			Color:      "許さんぞ水谷祐生",
+			Color:      "○してやるぞ、てんのすけ！",
 			DailyViews: d_v,
 		}
 		g = append(g, tmp)
