@@ -52,7 +52,9 @@ func SearchShort(c *gin.Context) {
 			}
 		}
 
-		if u_k != nil{k_name = u_k}
+		if u_k != nil {
+			k_name = u_k
+		}
 
 		//KeywordIDからTagを抽出
 		tag := model.GetTagByName(k_name)
@@ -85,10 +87,11 @@ func SearchShort(c *gin.Context) {
 	for i := 0; i < len(s); i++ {
 		sl := []Slide{}
 		for j := 0; j < len(model.GetSlideByShortID(s[i].ID)); j++ {
+			url, _ := integrations.GetFileUrl(model.GetSlideByShortID(s[i].ID)[j].Voice)
 			tmp := Slide{
 				Script:   model.GetSlideByShortID(s[i].ID)[j].Script,
 				Content:  model.GetSlideByShortID(s[i].ID)[j].SlideText,
-				VoiceURL: model.GetSlideByShortID(s[i].ID)[j].Voice,
+				VoiceURL: url,
 			}
 			sl = append(sl, tmp)
 		}
