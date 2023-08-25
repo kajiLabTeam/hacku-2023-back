@@ -40,10 +40,11 @@ func GetShort(c *gin.Context) {
 		if s != nil && s.GenreID != 0 {
 			sl := []Slide{}
 			for i := 0; i < len(model.GetSlideByShortID(s.ID)); i++ {
+				url, _ := integrations.GetFileUrl(model.GetSlideByShortID(s.ID)[i].Voice)
 				tmp := Slide{
 					Script:   model.GetSlideByShortID(s.ID)[i].Script,
 					Content:  model.GetSlideByShortID(s.ID)[i].SlideText,
-					VoiceURL: model.GetSlideByShortID(s.ID)[i].Voice,
+					VoiceURL: url,
 				}
 				sl = append(sl, tmp)
 			}
