@@ -11,7 +11,9 @@ import (
 func CreateShort(uid string, req model.ShortPost) error {
 	var short model.Short
 	var slides []model.Slide
+	var tags []model.Tag
 	var style, gid int
+	t := req.Tag
 	s := req.Slides
 
 	switch req.Genre {
@@ -97,13 +99,29 @@ func CreateShort(uid string, req model.ShortPost) error {
 		os.Remove(fn)
 	}
 
+	for _, v := range t {
+		var tag model.Tag
+		if k := model.GetKeywordByName(v); k != nil {
+			tag.KeywordID = k.ID
+			tags = append(tags, tag)
+		}
+	}
+
 	short.UserID = uid
 	short.Title = req.Title
 	short.GenreID = gid
 	short.Slides = slides
 	short.Speaker = req.Speaker
+	short.Tags = tags
 	if err := model.InsertShort(short); err != nil {
 		log.Fatal(err)
+	}
+
+	for _, v := range tags {
+		var achieve model.Achievement
+		achieve.KeywordID = v.KeywordID
+		achieve.UserID = uid
+		model.InsertAchievement(achieve)
 	}
 
 	return nil

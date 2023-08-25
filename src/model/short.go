@@ -22,6 +22,7 @@ type Short struct {
 type ShortPost struct {
 	Title   string      `json:"title"`
 	Genre   string      `json:"genre"`
+	Tag     []string    `json:"tag"`
 	Speaker string      `json:"speaker"`
 	Slides  []SlidePost `json:"slides"`
 }
@@ -81,7 +82,7 @@ func GetAllShort() []Short {
 	return s
 }
 func InsertShort(s Short) error {
-	if err:=db.Create(&s).Error; err != nil {
+	if err := db.Create(&s).Error; err != nil {
 		return err
 	}
 	return nil
