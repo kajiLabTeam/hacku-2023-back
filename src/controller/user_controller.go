@@ -161,7 +161,7 @@ func PostUser(c *gin.Context) {
 	nameInterfase := t.Claims["name"]
 	uname := nameInterfase.(string)
 
-	keyword := service.GetAllKeyword()
+	keyword,_ := service.GetAllKeyword()
 	for _, v := range keyword {
 		achieve := model.Achievement{UserID: uid, AchievementName: v, AchievementImage: ""}
 		model.InsertAchievement(achieve)
