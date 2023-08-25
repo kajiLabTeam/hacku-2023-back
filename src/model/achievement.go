@@ -7,9 +7,10 @@ import (
 )
 
 type Achievement struct {
-	ID        int    `gorm:"primaryKey;autoIncrement" json:"id"`
-	UserID    string `gorm:"type:varchar(28)" json:"userId"`
-	KeywordID int    `json:"keywordId"`
+	ID               int    `gorm:"primaryKey;autoIncrement" json:"id"`
+	UserID           string `gorm:"type:varchar(28)" json:"userId"`
+	AchievementName  string `json:"achievementName"`
+	AchievementImage string `json:"achievementImage"`
 }
 
 func GetAchievementByID(id int) *Achievement {
@@ -37,4 +38,9 @@ func InsertAchievement(a Achievement) {
 func DeleteAchievement(id int) {
 	a := Achievement{}
 	db.Delete(&a, id)
+}
+
+func UpdateAchievement(new_a Achievement) {
+	a := GetAchievementByID(new_a.ID)
+	db.Model(&a).Updates(new_a)
 }

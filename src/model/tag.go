@@ -8,7 +8,7 @@ import (
 
 type Tag struct {
 	ID        int `gorm:"primaryKey;autoIncrement" json:"id"`
-	KeywordID int `json:"keywordId"`
+	TagName string `json:"keywordId"`
 	ShortID   int `json:"shortId"`
 }
 
@@ -37,6 +37,16 @@ func GetTagByKeywordID(k_id []int) []Tag {
 	db.Where("keyword_id IN (?)", k_id).Where("short_id IN (?)", subQuery).
 		Find(&t)
 	return t
+}
+
+func GetTagByName(k_name []string) []Tag {
+	var tags []Tag
+	for _, v := range k_name {
+		var tag Tag
+		db.Where("tagname = ?", v).First(&tag)
+		tags = append(tags, tag)
+	}
+	return tags
 }
 
 func InsertTag(t Tag) {
