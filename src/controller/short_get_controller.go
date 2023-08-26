@@ -162,6 +162,7 @@ func GetShort(c *gin.Context) {
 				CreatedAt: fDate,
 				Reactions: rs,
 			}
+			model.InsertBrowsingHistory(model.BrowsingHistory{UserID: uid, ShortID: tmp.ID, ReadAt: time.Now()})
 			result = append(result, tmp)
 		}
 		//出力
